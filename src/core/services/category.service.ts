@@ -22,6 +22,10 @@ export class CategoryService {
         return await this.categoryModel.findById(id).exec();
     }
 
+    async getByUnitId(id: string): Promise<Category[]> {
+        return await this.categoryModel.find({ _unit: id }).exec();
+    }
+
     async updateById(id: string, category: UpdateCategoryDto): Promise<Category> {
         return await this.categoryModel.findByIdAndUpdate({ _id: id }, category).exec();
     }

@@ -1,12 +1,15 @@
 import { Controller, Get, Post, Put, Delete, Param, Body, Query } from '@nestjs/common';
 
-import { UnitService } from '../services';
+import { UnitService, CategoryService } from '../services';
 import { CreateUnitDto, UpdateUnitDto } from '../dto';
 import { Unit } from '../interfaces';
 
 @Controller('settings/units')
 export class UnitController {
-    constructor(private readonly unitService: UnitService) {
+    constructor(
+        private readonly unitService: UnitService,
+        private readonly categoryService: CategoryService
+    ) {
     }
 
     @Get('/')
@@ -31,6 +34,12 @@ export class UnitController {
 
     @Delete('/:id')
     async removeById(@Param('id') id: string): Promise<Unit> {
+        // change to removeByUnitId
+        let categories = await this.categoryService.getByUnitId(id);
+        // let prototypes = [].push(
+        //     // find prototypes by each category
+        // )
+        await Promise.all(categories.map(category => this.categoryService.removeById(category._id)))
         return await this.unitService.removeById(id);
     }
 }
