@@ -5,6 +5,7 @@ import { UnitService, CategoryService, PrototypeService, ProductService, StockSe
 import { UnitRef, UnitSchema } from './schemas';
 
 import { SettingsController } from './settings.controller';
+import { UnitController } from './controllers';
 
 @Module({
     imports: [
@@ -12,7 +13,7 @@ import { SettingsController } from './settings.controller';
             { name: UnitRef, schema: UnitSchema }
         ])
     ],
-    controllers: [SettingsController],
+    controllers: [SettingsController, UnitController],
     providers: [UnitService, CategoryService, PrototypeService, ProductService, StockService],
 })
 export class CoreModule { }
