@@ -47,7 +47,7 @@ describe('[CORE] :: Instances', () => {
             await unitService.dropCollection();
         });
         it('[UNIT] :: Unit collection should be empty', async () => {
-            let units = await unitService.list();
+            let units = await unitService.getAll();
             expect(units.length).toBe(0);
         });
         it('[UNIT] :: Should create unit', async () => {

@@ -14,8 +14,12 @@ export class UnitService {
         return await new this.unitModel(unit).save();
     }
 
-    async list(): Promise<Unit[]> {
+    async getAll(): Promise<Unit[]> {
         return await this.unitModel.find().exec();
+    }
+
+    async getById(id: string): Promise<Unit> {
+        return this.unitModel.findById(id).exec();
     }
 
     async updateById(id: string, unit: UpdateUnitDto): Promise<Unit> {

@@ -9,6 +9,6 @@ export class UnitController {
 
     @Get('/')
     async list() {
-        return await this.unitService.list();
+        return await this.unitService.getAll();
     }
 }
