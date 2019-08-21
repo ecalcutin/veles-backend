@@ -1,16 +1,17 @@
 import { Test } from '@nestjs/testing';
 import { MongooseModule } from '@nestjs/mongoose';
 
-import * as mongoose from 'mongoose';
+import mongoose from 'mongoose';
 
 import { UnitService, CategoryService, PrototypeService, ProductService, StockService } from '../core/services';
+import { APP_CONFIG } from '../config';
+import { UnitRef, UnitSchema } from './schemas';
 
 afterAll(async () => {
     await mongoose.disconnect();
-});
+})
 
 describe('[CORE] :: Instances', () => {
-
     let unitService: UnitService;
     let categoryService: CategoryService;
     let prototypeService: PrototypeService;
@@ -18,8 +19,13 @@ describe('[CORE] :: Instances', () => {
     let stockService: StockService;
 
     beforeAll(async () => {
-        await console.log('Initializing')
         const module = await Test.createTestingModule({
+            imports: [
+                MongooseModule.forRoot(APP_CONFIG.mongo_uri),
+                MongooseModule.forFeature([
+                    { name: UnitRef, schema: UnitSchema }
+                ]),
+            ],
             providers: [UnitService, CategoryService, PrototypeService, ProductService, StockService]
         }).compile();
         unitService = module.get(UnitService);
@@ -48,5 +54,4 @@ describe('[CORE] :: Instances', () => {
     it('[Service] :: Stock :: is ready', async () => {
         expect(stockService).toBeDefined();
     });
-
 });
