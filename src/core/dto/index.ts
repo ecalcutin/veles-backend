@@ -1,1 +1,1 @@
-export { CreateUnitDto } from './unit.dto';
+export { CreateUnitDto, UpdateUnitDto } from './unit.dto';

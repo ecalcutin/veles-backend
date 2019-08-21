@@ -4,7 +4,7 @@ import { PaginateModel, PaginateOptions, PaginateResult } from 'mongoose';
 
 import { UnitRef } from '../schemas';
 import { Unit } from '../interfaces';
-import { CreateUnitDto } from '../dto';
+import { CreateUnitDto, UpdateUnitDto } from '../dto';
 
 @Injectable()
 export class UnitService {
@@ -18,8 +18,15 @@ export class UnitService {
         return await this.unitModel.find().exec();
     }
 
+    async updateById(id: string, unit: UpdateUnitDto): Promise<Unit> {
+        return this.unitModel.findOneAndUpdate({ _id: id }, unit).exec();
+    }
+
+    async removeById(id: string): Promise<Unit> {
+        return await this.unitModel.findByIdAndRemove(id).exec();
+    }
+
     async dropCollection(): Promise<void> {
         await this.unitModel.remove({}).exec();
     }
-
 }
