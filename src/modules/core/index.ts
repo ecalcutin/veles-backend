@@ -7,4 +7,4 @@ import { StockProvider } from './stock.provider';
 @Module({
     providers: [UnitProvider, CategoryProvider, PrototypeProvider, StockProvider]
 })
-export class SettingsModule { }
+export class CoreModule { }
