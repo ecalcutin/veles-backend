@@ -4,8 +4,9 @@ import { MongooseModule } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
 
 import { UnitService, CategoryService, PrototypeService, ProductService, StockService } from '../core/services';
-import { APP_CONFIG } from '../config';
 import { UnitRef, UnitSchema } from './schemas';
+
+import { ConfigService, ConfigModule } from '../config';
 
 afterAll(async () => {
     await mongoose.disconnect();
@@ -21,7 +22,13 @@ describe('[CORE] :: Instances', () => {
     beforeAll(async () => {
         const module = await Test.createTestingModule({
             imports: [
-                MongooseModule.forRoot(APP_CONFIG.mongo_uri),
+                MongooseModule.forRootAsync({
+                    imports: [ConfigModule],
+                    useFactory: async (configService: ConfigService) => ({
+                        uri: configService.get('DATABASE_URL')
+                    }),
+                    inject: [ConfigService]
+                }),
                 MongooseModule.forFeature([
                     { name: UnitRef, schema: UnitSchema }
                 ]),
