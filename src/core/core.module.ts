@@ -1,12 +1,11 @@
 import { Module } from '@nestjs/common';
-import { UnitProvider } from './providers/unit.provider';
-import { CategoryProvider } from './providers/category.provider';
-import { PrototypeProvider } from './providers/prototype.provider';
-import { StockProvider } from './providers/stock.provider';
+
+import { UnitService, CategoryService, PrototypeService, ProductService, StockService } from './services';
+
 import { SettingsController } from './settings.controller';
 
 @Module({
     controllers: [SettingsController],
-    providers: [UnitProvider, CategoryProvider, PrototypeProvider, StockProvider],
+    providers: [UnitService, CategoryService, PrototypeService, ProductService, StockService],
 })
 export class CoreModule { }
