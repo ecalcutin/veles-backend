@@ -1,6 +1,8 @@
-import { Controller, Get, Post, Put, Delete, Param, Query } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Param, Query, Body } from '@nestjs/common';
 
 import { CategoryService } from '../services';
+import { CreateCategoryDto, UpdateCategoryDto } from '../dto';
+import { Category } from '../interfaces';
 
 @Controller('settings/categories')
 export class CategoryController {
@@ -10,5 +12,25 @@ export class CategoryController {
     @Get('/')
     async list() {
         return await this.categoryService.getAll();
+    }
+
+    @Post('/')
+    async create(@Body() category: CreateCategoryDto): Promise<Category> {
+        return await this.categoryService.create(category);
+    }
+
+    @Get('/:id')
+    async getById(@Param('id') id: string): Promise<Category> {
+        return await this.categoryService.getById(id);
+    }
+
+    @Put('/:id')
+    async updateById(@Body() category: UpdateCategoryDto, @Param('id') id: string): Promise<Category> {
+        return await this.categoryService.updateById(id, category);
+    }
+
+    @Delete('/:id')
+    async removeById(@Param('id') id: string): Promise<Category> {
+        return await this.categoryService.removeById(id);
     }
 }
