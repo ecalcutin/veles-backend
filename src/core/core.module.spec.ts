@@ -49,25 +49,7 @@ describe('[CORE] :: Instances', () => {
             expect(result._id).toBeDefined();
             expect(result.title).toBe('метр');
         });
-    })
-
-    it('[Service] :: Unit :: is ready', async () => {
-        expect(unitService).toBeDefined();
-    });
-
-    it('[Service] :: Category :: is ready', async () => {
-        expect(categoryService).toBeDefined();
-    });
-
-    it('[Service] :: Prototype :: is ready', async () => {
-        expect(prototypeService).toBeDefined();
-    });
-
-    it('[Service] :: Product :: is ready', async () => {
-        expect(productService).toBeDefined();
-    });
-
-    it('[Service] :: Stock :: is ready', async () => {
-        expect(stockService).toBeDefined();
     });
 });
+
+
