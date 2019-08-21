@@ -4,7 +4,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
 
 import { UnitService, CategoryService, PrototypeService, ProductService, StockService } from './services';
-import { UnitRef, UnitSchema } from './schemas';
+import { UnitRef, UnitSchema, CategoryRef, CategorySchema } from './schemas';
 
 import { ConfigService, ConfigModule } from '../config';
 
@@ -30,7 +30,8 @@ describe('[CORE] :: Instances', () => {
                     inject: [ConfigService]
                 }),
                 MongooseModule.forFeature([
-                    { name: UnitRef, schema: UnitSchema }
+                    { name: UnitRef, schema: UnitSchema },
+                    { name: CategoryRef, schema: CategorySchema }
                 ]),
             ],
             providers: [UnitService, CategoryService, PrototypeService, ProductService, StockService]
@@ -44,7 +45,11 @@ describe('[CORE] :: Instances', () => {
 
     it('[CORE] - [UnitService] should be defined', () => {
         expect(unitService).toBeDefined();
-    })
+    });
+
+    it('[CORE] - [CategoryService] should be defined', () => {
+        expect(categoryService).toBeDefined();
+    });
 });
 
 

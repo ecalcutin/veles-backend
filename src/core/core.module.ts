@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 
 import { UnitService, CategoryService, PrototypeService, ProductService, StockService } from './services';
-import { UnitRef, UnitSchema } from './schemas';
+import { UnitRef, UnitSchema, CategoryRef, CategorySchema } from './schemas';
 
 import { SettingsController } from './settings.controller';
 import { UnitController } from './controllers';
@@ -10,7 +10,8 @@ import { UnitController } from './controllers';
 @Module({
     imports: [
         MongooseModule.forFeature([
-            { name: UnitRef, schema: UnitSchema }
+            { name: UnitRef, schema: UnitSchema },
+            { name: CategoryRef, schema: CategorySchema }
         ])
     ],
     controllers: [SettingsController, UnitController],
