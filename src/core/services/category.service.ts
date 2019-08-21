@@ -8,9 +8,7 @@ import { CreateCategoryDto, UpdateCategoryDto } from '../dto';
 
 @Injectable()
 export class CategoryService {
-    constructor(@InjectModel(CategoryRef) private readonly categoryModel: PaginateModel<Category>) {
-
-    }
+    constructor(@InjectModel(CategoryRef) private readonly categoryModel: PaginateModel<Category>) { }
 
     async create(category: CreateCategoryDto): Promise<Category> {
         return await new this.categoryModel(category).save()
