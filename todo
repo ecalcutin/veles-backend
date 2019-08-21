@@ -6,3 +6,5 @@ make config for test & production
 
 jest initialize global testing module
 using chalk (colored logger)
+
+when removing -> response with remove count
