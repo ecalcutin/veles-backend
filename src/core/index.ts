@@ -5,6 +5,7 @@ import { PrototypeProvider } from './prototype.provider';
 import { StockProvider } from './stock.provider';
 
 @Module({
-    providers: [UnitProvider, CategoryProvider, PrototypeProvider, StockProvider]
+    providers: [UnitProvider, CategoryProvider, PrototypeProvider, StockProvider],
+    exports: [StockProvider]
 })
 export class CoreModule { }
