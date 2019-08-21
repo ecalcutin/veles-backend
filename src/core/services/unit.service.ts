@@ -1,4 +1,4 @@
-import { Injectable, Body } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { PaginateModel, PaginateOptions, PaginateResult } from 'mongoose';
 
@@ -10,7 +10,7 @@ import { CreateUnitDto, UpdateUnitDto } from '../dto';
 export class UnitService {
     constructor(@InjectModel(UnitRef) private readonly unitModel: PaginateModel<Unit>) { }
 
-    async create(@Body() unit: CreateUnitDto): Promise<Unit> {
+    async create(unit: CreateUnitDto): Promise<Unit> {
         return await new this.unitModel(unit).save();
     }
 
