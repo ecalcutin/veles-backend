@@ -18,7 +18,7 @@ export class UnitService {
         return await this.unitModel.find().exec();
     }
 
-    async removeAll(): Promise<void> {
+    async dropCollection(): Promise<void> {
         await this.unitModel.remove({}).exec();
     }
 

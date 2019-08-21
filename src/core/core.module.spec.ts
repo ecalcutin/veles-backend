@@ -9,7 +9,7 @@ import { UnitRef, UnitSchema } from './schemas';
 
 afterAll(async () => {
     await mongoose.disconnect();
-})
+});
 
 describe('[CORE] :: Instances', () => {
     let unitService: UnitService;
@@ -34,6 +34,22 @@ describe('[CORE] :: Instances', () => {
         productService = module.get(ProductService);
         stockService = module.get(StockService);
     });
+
+    describe('[UNIT] :: Service', () => {
+        beforeAll(async () => {
+            await unitService.dropCollection();
+        });
+        it('[UNIT] :: Unit collection should be empty', async () => {
+            let units = await unitService.list();
+            expect(units.length).toBe(0);
+        });
+        it('[UNIT] :: Should create unit', async () => {
+            let result = await unitService.create({ title: 'метр' });
+            expect(result).toBeDefined();
+            expect(result._id).toBeDefined();
+            expect(result.title).toBe('метр');
+        });
+    })
 
     it('[Service] :: Unit :: is ready', async () => {
         expect(unitService).toBeDefined();
