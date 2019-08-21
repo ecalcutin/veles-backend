@@ -3,21 +3,17 @@ import { MongooseModule } from '@nestjs/mongoose';
 
 import mongoose from 'mongoose';
 
-import { UnitService, CategoryService, PrototypeService, ProductService, StockService } from './services';
-import { UnitRef, UnitSchema } from './schemas';
+import { UnitService } from '../services';
+import { UnitRef, UnitSchema } from '../schemas';
 
-import { ConfigService, ConfigModule } from '../config';
+import { ConfigService, ConfigModule } from '../../config';
 
 afterAll(async () => {
     await mongoose.disconnect();
 });
 
-describe('[CORE] :: Instances', () => {
+describe('[UnitService]', () => {
     let unitService: UnitService;
-    let categoryService: CategoryService;
-    let prototypeService: PrototypeService;
-    let productService: ProductService;
-    let stockService: StockService;
 
     beforeAll(async () => {
         const module = await Test.createTestingModule({
@@ -33,18 +29,26 @@ describe('[CORE] :: Instances', () => {
                     { name: UnitRef, schema: UnitSchema }
                 ]),
             ],
-            providers: [UnitService, CategoryService, PrototypeService, ProductService, StockService]
+            providers: [UnitService]
         }).compile();
         unitService = module.get(UnitService);
-        categoryService = module.get(CategoryService);
-        prototypeService = module.get(PrototypeService);
-        productService = module.get(ProductService);
-        stockService = module.get(StockService);
     });
 
-    it('[CORE] - [UnitService] should be defined', () => {
-        expect(unitService).toBeDefined();
-    })
+    describe('[UnitService] :: Service', () => {
+        beforeAll(async () => {
+            await unitService.dropCollection();
+        });
+        it('[UnitService] :: Unit collection should be empty', async () => {
+            let units = await unitService.getAll();
+            expect(units.length).toBe(0);
+        });
+        it('[UnitService] :: Should create unit', async () => {
+            let result = await unitService.create({ title: 'метр' });
+            expect(result).toBeDefined();
+            expect(result._id).toBeDefined();
+            expect(result.title).toBe('метр');
+        });
+    });
 });
 
 
