@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { PaginateModel, PaginateOptions, PaginateResult } from 'mongoose';
+import { Model } from 'mongoose';
 
 import { CategoryRef } from '../schemas';
 import { Category } from '../interfaces';
@@ -8,7 +8,7 @@ import { CreateCategoryDto, UpdateCategoryDto } from '../dto';
 
 @Injectable()
 export class CategoryService {
-    constructor(@InjectModel(CategoryRef) private readonly categoryModel: PaginateModel<Category>) { }
+    constructor(@InjectModel(CategoryRef) private readonly categoryModel: Model<Category>) { }
 
     async create(category: CreateCategoryDto): Promise<Category> {
         return await new this.categoryModel(category).save()

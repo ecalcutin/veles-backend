@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { PaginateModel, PaginateOptions, PaginateResult } from 'mongoose';
+import { Model } from 'mongoose';
 
 import { PrototypeRef } from '../schemas';
 import { Prototype } from '../interfaces';
@@ -8,7 +8,7 @@ import { CreatePrototypeDto, UpdatePrototypeDto } from '../dto';
 
 @Injectable()
 export class PrototypeService {
-    constructor(@InjectModel(PrototypeRef) private readonly prototypeModel: PaginateModel<Prototype>) { }
+    constructor(@InjectModel(PrototypeRef) private readonly prototypeModel: Model<Prototype>) { }
 
     async create(prototype: CreatePrototypeDto): Promise<Prototype> {
         return await new this.prototypeModel(prototype).save();
