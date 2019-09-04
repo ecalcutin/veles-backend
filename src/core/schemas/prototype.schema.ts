@@ -1,5 +1,4 @@
 import { Schema } from 'mongoose';
-import paginate from 'mongoose-paginate-v2';
 
 import { UnitRef } from './unit.schema';
 import { CategoryRef } from './category.schema';
@@ -36,5 +35,3 @@ export const PrototypeSchema = new Schema(
         timestamps: true,
     },
 );
-
-PrototypeSchema.plugin(paginate);

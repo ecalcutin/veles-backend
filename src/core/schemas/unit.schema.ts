@@ -1,5 +1,4 @@
 import { Schema } from 'mongoose';
-import paginate from 'mongoose-paginate-v2';
 
 export const UnitRef = "Unit";
 export const UnitSchema = new Schema(
@@ -15,5 +14,3 @@ export const UnitSchema = new Schema(
 
     }
 );
-
-UnitSchema.plugin(paginate);
