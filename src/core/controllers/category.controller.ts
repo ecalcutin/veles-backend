@@ -4,7 +4,7 @@ import { CategoryService } from '../services';
 import { CreateCategoryDto, UpdateCategoryDto } from '../dto';
 import { Category } from '../interfaces';
 
-@Controller('settings/categories')
+@Controller('categories')
 export class CategoryController {
     constructor(private readonly categoryService: CategoryService) {
     }

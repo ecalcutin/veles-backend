@@ -4,7 +4,7 @@ import { PrototypeService } from '../services';
 import { Prototype } from '../interfaces';
 import { CreatePrototypeDto, UpdatePrototypeDto } from '../dto';
 
-@Controller('settings/prototypes')
+@Controller('prototypes')
 export class PrototypeController {
     constructor(private readonly prototypeService: PrototypeService) {
     }

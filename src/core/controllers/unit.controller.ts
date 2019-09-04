@@ -4,7 +4,7 @@ import { UnitService, CategoryService } from '../services';
 import { CreateUnitDto, UpdateUnitDto } from '../dto';
 import { Unit } from '../interfaces';
 
-@Controller('settings/units')
+@Controller('units')
 export class UnitController {
     constructor(
         private readonly unitService: UnitService,
