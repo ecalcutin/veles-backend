@@ -8,35 +8,40 @@ import { CreateCategoryDto, UpdateCategoryDto } from '../dto';
 
 @Injectable()
 export class CategoryService {
-    constructor(@InjectModel(CategoryRef) private readonly categoryModel: Model<Category>) { }
+  constructor(
+    @InjectModel(CategoryRef) private readonly categoryModel: Model<Category>,
+  ) {}
 
-    async create(category: CreateCategoryDto): Promise<Category> {
-        return await new this.categoryModel(category).save()
-    }
+  async create(category: CreateCategoryDto): Promise<Category> {
+    return await new this.categoryModel(category).save();
+  }
 
-    async getAll(): Promise<Category[]> {
-        return await this.categoryModel.find().exec();
-    }
+  async getAll(): Promise<Category[]> {
+    return await this.categoryModel
+      .find()
+      .populate('_unit')
+      .exec();
+  }
 
-    async getById(id: string): Promise<Category> {
-        return await this.categoryModel.findById(id).exec();
-    }
+  async getById(id: string): Promise<Category> {
+    return await this.categoryModel.findById(id).exec();
+  }
 
-    async getByUnitId(id: string): Promise<Category[]> {
-        return await this.categoryModel.find({ _unit: id }).exec();
-    }
+  async getByUnitId(id: string): Promise<Category[]> {
+    return await this.categoryModel.find({ _unit: id }).exec();
+  }
 
-    async updateById(id: string, category: UpdateCategoryDto): Promise<Category> {
-        return await this.categoryModel.findByIdAndUpdate({ _id: id }, category).exec();
-    }
+  async updateById(id: string, category: UpdateCategoryDto): Promise<Category> {
+    return await this.categoryModel
+      .findByIdAndUpdate({ _id: id }, category)
+      .exec();
+  }
 
-    async removeById(id: string): Promise<Category> {
-        return await this.categoryModel.findByIdAndRemove(id).exec();
-    }
+  async removeById(id: string): Promise<Category> {
+    return await this.categoryModel.findByIdAndRemove(id).exec();
+  }
 
-    async dropCollection(): Promise<void> {
-        await this.categoryModel.remove({}).exec();
-    }
-
-
+  async dropCollection(): Promise<void> {
+    await this.categoryModel.remove({}).exec();
+  }
 }
