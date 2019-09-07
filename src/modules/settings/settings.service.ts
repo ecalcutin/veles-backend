@@ -22,15 +22,7 @@ export class SettingsService {
     }
 
     async createPrototype(prototype: CreatePrototypeDto): Promise<Prototype> {
-        let _prototype = await new this.prototypeModel(prototype).save();
-        let stocks = await this.stockModel.find().exec();
-        await Promise.all([
-            ...stocks.map(_stock => new this.productModel({
-                _stock,
-                _prototype
-            }).save())
-        ])
-        return _prototype;
+        return await new this.prototypeModel(prototype).save();
     }
 
     async updatePrototype(id: string, prototype: UpdatePrototypeDto): Promise<Prototype> {
@@ -47,15 +39,7 @@ export class SettingsService {
     }
 
     async createStock(stock: CreateStockDto): Promise<Stock> {
-        let _stock = await new this.stockModel(stock).save();
-        let prototypes = await this.prototypeModel.find().exec();
-        await Promise.all([
-            ...prototypes.map(_prototype => new this.productModel({
-                _prototype,
-                _stock
-            }).save())
-        ])
-        return _stock;
+        return await new this.stockModel(stock).save();
     }
 
     async removeStock(id: string): Promise<Stock> {
