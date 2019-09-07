@@ -1,4 +1,12 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
+import { BalanceService } from './balance.service';
 
-@Controller('balance')
-export class BalanceController { }
+@Controller('balances')
+export class BalanceController {
+    constructor(private readonly balanceService: BalanceService) { }
+
+    @Get('/')
+    async fetchBalance(@Query() options) {
+        return await this.balanceService.getBalance(options);
+    }
+}
