@@ -10,7 +10,7 @@ import { CreateCategoryDto, UpdateCategoryDto } from '../dto';
 export class CategoryService {
   constructor(
     @InjectModel(CategoryRef) private readonly categoryModel: Model<Category>,
-  ) {}
+  ) { }
 
   async create(category: CreateCategoryDto): Promise<Category> {
     return await new this.categoryModel(category).save();
@@ -19,7 +19,6 @@ export class CategoryService {
   async getAll(): Promise<Category[]> {
     return await this.categoryModel
       .find()
-      .populate('_unit')
       .exec();
   }
 
