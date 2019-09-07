@@ -56,7 +56,7 @@ export class SettingsService {
 
     async removeStock(id: string): Promise<Stock> {
         await this.productModel.remove({ _stock: id }).exec();
-        return await this.stockModel.findOneAndRemove(id).exec();
+        return await this.stockModel.findByIdAndRemove(id).exec();
     }
 
 
