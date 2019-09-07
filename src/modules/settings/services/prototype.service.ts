@@ -20,7 +20,6 @@ export class PrototypeService {
   async getAll(): Promise<Prototype[]> {
     return await this.prototypeModel
       .find()
-      .populate(['_category', '_unit'])
       .exec();
   }
 

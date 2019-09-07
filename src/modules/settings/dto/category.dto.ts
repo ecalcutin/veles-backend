@@ -5,9 +5,6 @@ export class CreateCategoryDto {
     @MinLength(4)
     @MaxLength(20)
     readonly title: string;
-
-    @IsString()
-    readonly unit: string;
 }
 
 export class UpdateCategoryDto {
@@ -15,7 +12,4 @@ export class UpdateCategoryDto {
     @MinLength(4)
     @MaxLength(20)
     readonly title: string;
-
-    @IsString()
-    readonly unit: string;
 }
