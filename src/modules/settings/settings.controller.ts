@@ -46,6 +46,11 @@ export class SettingsController {
         return await this.stockService.create(stock);
     }
 
+    @Delete('stocks/:id')
+    async removeStockById(@Param('id') id: string): Promise<Category> {
+        return await this.stockService.removeById(id);
+    }
+
     // Prototypes
 
     @Get('prototypes')

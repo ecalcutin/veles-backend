@@ -10,7 +10,7 @@ export const PrototypeSchema = new Schema(
             required: true,
             unique: true,
         },
-        _category: {
+        category: {
             type: Schema.Types.ObjectId,
             ref: CategoryRef,
             required: true,
