@@ -6,10 +6,12 @@ import { ConfigModule, ConfigService } from './config';
 
 import { SettingsModule } from './modules/settings';
 import { BalanceModule } from './modules/balance';
+import { CronModule } from './cron';
 
 @Module({
   imports: [
     ConfigModule,
+    CronModule,
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
