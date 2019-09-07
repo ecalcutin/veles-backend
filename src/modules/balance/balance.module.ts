@@ -1,4 +1,10 @@
 import { Module } from '@nestjs/common';
+import { BalanceService } from './balance.service';
+import { BalanceController } from './balance.controller';
 
-@Module({})
+@Module({
+    imports: [],
+    controllers: [BalanceController],
+    providers: [BalanceService]
+})
 export class BalanceModule { }
