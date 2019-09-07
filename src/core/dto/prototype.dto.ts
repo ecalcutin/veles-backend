@@ -6,7 +6,6 @@ export class CreatePrototypeDto {
     @MaxLength(10)
     readonly title: string;
     readonly _category: string;
-    readonly _unit: string;
 
     @IsNumber()
     @IsPositive()
@@ -23,7 +22,6 @@ export class UpdatePrototypeDto {
     @MaxLength(10)
     readonly title: string;
     readonly _category: string;
-    readonly _unit: string;
 
     @IsNumber()
     @IsPositive()
