@@ -18,7 +18,7 @@ export class SettingsService {
 
 
     async getPrototypes(): Promise<Prototype[]> {
-        return await this.prototypeModel.find().exec();
+        return await this.prototypeModel.find().populate(['_category']).exec();
     }
 
     async createPrototype(prototype: CreatePrototypeDto): Promise<Prototype> {
