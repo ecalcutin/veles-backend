@@ -6,7 +6,7 @@ import mongoose from 'mongoose';
 import { CategoryService, PrototypeService, ProductService, StockService } from './services';
 import { CategoryRef, CategorySchema, PrototypeRef, PrototypeSchema } from './schemas';
 
-import { ConfigService, ConfigModule } from '../config';
+import { ConfigService, ConfigModule } from '../../config';
 
 afterAll(async () => {
     await mongoose.disconnect();
