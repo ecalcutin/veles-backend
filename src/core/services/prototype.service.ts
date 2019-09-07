@@ -11,19 +11,17 @@ export class PrototypeService {
   constructor(
     @InjectModel(PrototypeRef)
     private readonly prototypeModel: Model<Prototype>,
-  ) {}
+  ) { }
 
   async create(prototype: CreatePrototypeDto): Promise<Prototype> {
     return await new this.prototypeModel(prototype).save();
   }
 
   async getAll(): Promise<Prototype[]> {
-    let c = await this.prototypeModel
+    return await this.prototypeModel
       .find()
       .populate(['_category', '_unit'])
       .exec();
-    console.log(c);
-    return c;
   }
 
   async getById(id: string): Promise<Prototype> {
