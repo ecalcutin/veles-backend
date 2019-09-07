@@ -65,7 +65,7 @@ export class SettingsController {
     }
 
     @Delete('prototypes/:id')
-    async removeById(@Param('id') id: string): Promise<Prototype> {
+    async removePrototypeById(@Param('id') id: string): Promise<Prototype> {
         return await this.prototypeService.removeById(id);
     }
 }
