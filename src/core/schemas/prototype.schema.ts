@@ -1,6 +1,5 @@
 import { Schema } from 'mongoose';
 
-import { UnitRef } from './unit.schema';
 import { CategoryRef } from './category.schema';
 
 export const PrototypeRef = 'Prototype';
@@ -16,9 +15,8 @@ export const PrototypeSchema = new Schema(
             ref: CategoryRef,
             required: true,
         },
-        _unit: {
-            type: Schema.Types.ObjectId,
-            ref: UnitRef,
+        unit: {
+            type: String,
             required: true,
         },
         price_retail: {

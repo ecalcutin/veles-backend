@@ -7,7 +7,7 @@ export class CreateCategoryDto {
     readonly title: string;
 
     @IsString()
-    readonly _unit: string;
+    readonly unit: string;
 }
 
 export class UpdateCategoryDto {
@@ -17,5 +17,5 @@ export class UpdateCategoryDto {
     readonly title: string;
 
     @IsString()
-    readonly _unit: string;
+    readonly unit: string;
 }
