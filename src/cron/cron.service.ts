@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
+import { CronJob } from 'cron';
 
 @Injectable()
 export class CronService {
-    constructor() {
-        console.log('CRON test.')
-    }
+    constructor() { }
 }
