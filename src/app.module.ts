@@ -5,6 +5,7 @@ import { LoggerMiddleware } from './middlewares/logger';
 import { ConfigModule, ConfigService } from './config';
 
 import { SettingsModule } from './modules/settings';
+import { BalanceModule } from './modules/balance';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { SettingsModule } from './modules/settings';
       inject: [ConfigService]
     }),
     SettingsModule,
+    BalanceModule
   ],
   controllers: [],
   providers: [],

@@ -1,5 +1,6 @@
 import { Schema } from 'mongoose';
 
+
 export const CategoryRef = 'Category';
 export const CategorySchema = new Schema(
     {
@@ -7,7 +8,7 @@ export const CategorySchema = new Schema(
             type: String,
             required: true,
             unique: true,
-        },
+        }
     },
     {
         timestamps: true,
