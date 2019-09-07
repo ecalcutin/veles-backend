@@ -19,6 +19,9 @@ export class SettingsService {
     async createCategory(category: CreateCategoryDto): Promise<Category> {
         return await new this.categoryModel(category).save();
     }
+    async getCategories(): Promise<Category[]> {
+        return await this.categoryModel.find().exec();
+    }
 
     // Unit
     async createUnit(unit: CreateUnitDto): Promise<Unit> {
