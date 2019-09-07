@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Put, Delete, Param, Query, Body } from '@nestjs/common';
-import { CategoryService, PrototypeService, ProductService, StockService } from './services/';
+import { CategoryService, PrototypeService, StockService } from './services/';
 
 import { Category, Stock, Prototype } from './interfaces';
 import { CreateCategoryDto, UpdateCategoryDto, CreateStockDto, UpdateStockDto, CreatePrototypeDto, UpdatePrototypeDto } from './dto';
@@ -10,7 +10,6 @@ export class SettingsController {
         private readonly categoryService: CategoryService,
         private readonly prototypeService: PrototypeService,
         private readonly stockService: StockService,
-        private readonly productService: ProductService
     ) { }
 
     // Category

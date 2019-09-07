@@ -4,7 +4,6 @@ import { MongooseModule } from '@nestjs/mongoose';
 import {
   CategoryService,
   PrototypeService,
-  ProductService,
   StockService,
 } from './services';
 import {
@@ -32,7 +31,6 @@ import { SettingsController } from './settings.controller';
   providers: [
     CategoryService,
     PrototypeService,
-    ProductService,
     StockService,
   ],
 })
