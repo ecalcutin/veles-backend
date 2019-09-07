@@ -4,7 +4,7 @@ import { Model } from 'mongoose';
 
 import { PrototypeRef, StockRef, CategoryRef, ProductRef } from './schemas';
 import { Prototype, Stock, Category, Product } from './interfaces';
-import { CreatePrototypeDto, CreateStockDto, CreateCategoryDto } from './dto';
+import { CreatePrototypeDto, CreateStockDto, CreateCategoryDto, UpdatePrototypeDto } from './dto';
 
 @Injectable()
 export class SettingsService {
@@ -31,6 +31,10 @@ export class SettingsService {
             }).save())
         ])
         return _prototype;
+    }
+
+    async updatePrototype(id: string, prototype: UpdatePrototypeDto): Promise<Prototype> {
+        return await this.prototypeModel.findOneAndUpdate({ _id: id }, prototype).exec();
     }
 
     async removePrototype(id: string): Promise<Prototype> {

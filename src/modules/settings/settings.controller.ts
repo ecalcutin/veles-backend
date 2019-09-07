@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Put, Delete, Param, Body } from '@nestjs/common';
 
 import { Category, Stock, Prototype } from './interfaces';
-import { CreateCategoryDto, CreateStockDto, UpdateStockDto, CreatePrototypeDto } from './dto';
+import { CreateCategoryDto, CreateStockDto, UpdateStockDto, CreatePrototypeDto, UpdatePrototypeDto } from './dto';
 import { SettingsService } from './settings.service';
 
 @Controller('settings')
@@ -54,6 +54,12 @@ export class SettingsController {
     async createPrototype(@Body() prototype: CreatePrototypeDto): Promise<Prototype> {
         return await this.settingsService.createPrototype(prototype);
     }
+
+    @Put('prototypes/:id')
+    async updatePrototypeById(@Body() prototype: UpdatePrototypeDto, @Param('id') id: string): Promise<Prototype> {
+        return await this.settingsService.updatePrototype(id, prototype);
+    }
+
     @Delete('prototypes/:id')
     async removePrototypeById(@Param('id') id: string): Promise<Prototype> {
         return await this.settingsService.removePrototype(id);
