@@ -34,7 +34,7 @@ export class SettingsService {
     }
 
     async updatePrototype(id: string, prototype: UpdatePrototypeDto): Promise<Prototype> {
-        return await this.prototypeModel.findOneAndUpdate({ _id: id }, prototype).exec();
+        return await this.prototypeModel.findByIdAndUpdate(id, prototype).exec();
     }
 
     async removePrototype(id: string): Promise<Prototype> {
