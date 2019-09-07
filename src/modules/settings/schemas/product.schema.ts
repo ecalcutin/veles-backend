@@ -19,6 +19,14 @@ export const ProductSchema = new Schema(
         quantity: {
             type: Number,
             default: 0
+        },
+        income: {
+            type: Number,
+            default: 0
+        },
+        outcome: {
+            type: Number,
+            default: 0
         }
     },
     {
