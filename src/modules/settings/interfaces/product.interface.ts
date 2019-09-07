@@ -1,8 +1,8 @@
 import { Document } from 'mongoose';
 
 export interface Product extends Document {
-    prototype: string;
-    stock: string;
+    _prototype: string;
+    _stock: string;
     quantity: number;
 }
 

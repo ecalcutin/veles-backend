@@ -5,12 +5,14 @@ import { Model } from 'mongoose';
 import { PrototypeRef } from '../schemas';
 import { Prototype } from '../interfaces';
 import { CreatePrototypeDto, UpdatePrototypeDto } from '../dto';
+import { ProductService } from './product.service';
 
 @Injectable()
 export class PrototypeService {
   constructor(
     @InjectModel(PrototypeRef)
     private readonly prototypeModel: Model<Prototype>,
+    private readonly productService: ProductService
   ) { }
 
   async create(prototype: CreatePrototypeDto): Promise<Prototype> {

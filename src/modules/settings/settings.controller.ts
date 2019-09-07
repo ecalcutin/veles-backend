@@ -1,80 +1,61 @@
-import { Controller, Get, Post, Put, Delete, Param, Query, Body } from '@nestjs/common';
-import { CategoryService, PrototypeService, StockService } from './services/';
+import { Controller, Get, Post, Put, Delete, Param, Body } from '@nestjs/common';
 
 import { Category, Stock, Prototype } from './interfaces';
-import { CreateCategoryDto, UpdateCategoryDto, CreateStockDto, UpdateStockDto, CreatePrototypeDto, UpdatePrototypeDto } from './dto';
+import { CreateCategoryDto, CreateStockDto, UpdateStockDto, CreatePrototypeDto } from './dto';
+import { SettingsService } from './settings.service';
 
 @Controller('settings')
 export class SettingsController {
-    constructor(
-        private readonly categoryService: CategoryService,
-        private readonly prototypeService: PrototypeService,
-        private readonly stockService: StockService,
-    ) { }
-
-    // Category
+    constructor(private readonly settingsService: SettingsService) { }
 
     @Get('categories')
     async getCategories() {
-        return await this.categoryService.getAll();
+        return await this.settingsService.getCategories();
     }
 
     @Post('categories')
     async createCategory(@Body() category: CreateCategoryDto): Promise<Category> {
-        return await this.categoryService.create(category);
-    }
-
-    @Put('categories/:id')
-    async updateCategoryById(@Body() category: UpdateCategoryDto, @Param('id') id: string): Promise<Category> {
-        return await this.categoryService.updateById(id, category);
+        return await this.settingsService.createCategory(category);
     }
 
     @Delete('categories/:id')
     async removeCategoryById(@Param('id') id: string): Promise<Category> {
-        return await this.categoryService.removeById(id);
+        return await this.settingsService.removeCategory(id);
     }
 
-    // Stocks
 
     @Get('stocks')
     async getStocks() {
-        return await this.stockService.getAll();
+        return await this.settingsService.getStocks();
     }
 
     @Post('stocks')
     async createStock(@Body() stock: CreateStockDto): Promise<Stock> {
-        return await this.stockService.create(stock);
+        return await this.settingsService.createStock(stock);
     }
 
     @Put('stocks/:id')
     async updateStockById(@Body() stock: UpdateStockDto, @Param('id') id: string): Promise<Stock> {
-        return await this.stockService.updateById(id, stock);
+        return await this.settingsService.createStock(stock);
     }
 
     @Delete('stocks/:id')
     async removeStockById(@Param('id') id: string): Promise<Category> {
-        return await this.stockService.removeById(id);
+        return await this.settingsService.removeStock(id);
     }
 
-    // Prototypes
 
     @Get('prototypes')
     async getPrototypes() {
-        return await this.prototypeService.getAll();
+        return await this.settingsService.getPrototypes();
     }
 
     @Post('prototypes')
     async createPrototype(@Body() prototype: CreatePrototypeDto): Promise<Prototype> {
-        return await this.prototypeService.create(prototype);
+        return await this.settingsService.createPrototype(prototype);
     }
-
-    @Put('prototypes/:id')
-    async updatePrototypeById(@Body() prototype: UpdatePrototypeDto, @Param('id') id: string): Promise<Prototype> {
-        return await this.prototypeService.updateById(id, prototype);
-    }
-
     @Delete('prototypes/:id')
     async removePrototypeById(@Param('id') id: string): Promise<Prototype> {
-        return await this.prototypeService.removeById(id);
+        return await this.settingsService.removePrototype(id);
     }
 }

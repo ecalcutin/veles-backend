@@ -6,12 +6,12 @@ import { StockRef } from './stock.schema';
 export const ProductRef = 'Product';
 export const ProductSchema = new Schema(
     {
-        prototype: {
+        _prototype: {
             type: Schema.Types.ObjectId,
             ref: PrototypeRef,
             required: true,
         },
-        stock: {
+        _stock: {
             type: Schema.Types.ObjectId,
             ref: StockRef,
             required: true,
