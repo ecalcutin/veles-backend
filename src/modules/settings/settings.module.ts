@@ -17,11 +17,6 @@ import {
 } from './schemas';
 
 import { SettingsController } from './settings.controller';
-import {
-  CategoryController,
-  PrototypeController,
-  StockController,
-} from './controllers';
 
 @Module({
   imports: [
@@ -33,9 +28,6 @@ import {
   ],
   controllers: [
     SettingsController,
-    CategoryController,
-    PrototypeController,
-    StockController,
   ],
   providers: [
     CategoryService,
@@ -44,4 +36,4 @@ import {
     StockService,
   ],
 })
-export class SettingsModule {}
+export class SettingsModule { }
