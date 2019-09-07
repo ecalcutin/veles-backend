@@ -44,4 +44,4 @@ import {
     StockService,
   ],
 })
-export class CoreModule {}
+export class SettingsModule {}

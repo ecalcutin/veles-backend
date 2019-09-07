@@ -3,8 +3,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 
 import mongoose from 'mongoose';
 
-import { UnitService, CategoryService, PrototypeService, ProductService, StockService } from './services';
-import { UnitRef, UnitSchema, CategoryRef, CategorySchema, PrototypeRef, PrototypeSchema } from './schemas';
+import { CategoryService, PrototypeService, ProductService, StockService } from './services';
+import { CategoryRef, CategorySchema, PrototypeRef, PrototypeSchema } from './schemas';
 
 import { ConfigService, ConfigModule } from '../config';
 
@@ -13,7 +13,6 @@ afterAll(async () => {
 });
 
 describe('[CORE] :: Instances', () => {
-    let unitService: UnitService;
     let categoryService: CategoryService;
     let prototypeService: PrototypeService;
     let productService: ProductService;
@@ -30,22 +29,16 @@ describe('[CORE] :: Instances', () => {
                     inject: [ConfigService]
                 }),
                 MongooseModule.forFeature([
-                    { name: UnitRef, schema: UnitSchema },
                     { name: CategoryRef, schema: CategorySchema },
                     { name: PrototypeRef, schema: PrototypeSchema }
                 ]),
             ],
-            providers: [UnitService, CategoryService, PrototypeService, ProductService, StockService]
+            providers: [CategoryService, PrototypeService, ProductService, StockService]
         }).compile();
-        unitService = module.get(UnitService);
         categoryService = module.get(CategoryService);
         prototypeService = module.get(PrototypeService);
         productService = module.get(ProductService);
         stockService = module.get(StockService);
-    });
-
-    it('[CORE] - [UnitService] should be defined', () => {
-        expect(unitService).toBeDefined();
     });
 
     it('[CORE] - [CategoryService] should be defined', () => {

@@ -4,7 +4,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { LoggerMiddleware } from './middlewares/logger';
 import { ConfigModule, ConfigService } from './config';
 
-import { CoreModule } from './core';
+import { SettingsModule } from './settings';
 
 @Module({
   imports: [
@@ -16,7 +16,7 @@ import { CoreModule } from './core';
       }),
       inject: [ConfigService]
     }),
-    CoreModule,
+    SettingsModule,
   ],
   controllers: [],
   providers: [],
