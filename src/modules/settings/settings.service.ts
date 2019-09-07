@@ -4,7 +4,7 @@ import { Model } from 'mongoose';
 
 import { CategoryRef, PrototypeRef, StockRef, UnitRef } from './schemas';
 import { Category, Prototype, Stock, Unit } from './interfaces';
-import { CreateCategoryDto, UpdateCategoryDto } from './dto';
+import { CreateCategoryDto, UpdateCategoryDto, CreateUnitDto } from './dto';
 
 @Injectable()
 export class SettingsService {
@@ -15,5 +15,27 @@ export class SettingsService {
         @InjectModel(UnitRef) private readonly unitModel: Model<Unit>,
     ) { }
 
-    
+    // Category
+    async createCategory(category: CreateCategoryDto): Promise<Category> {
+        return await new this.categoryModel(category).save();
+    }
+
+    // Unit
+    async createUnit(unit: CreateUnitDto): Promise<Unit> {
+        return await new this.unitModel(unit).save();
+    }
+    async getUnits(): Promise<Unit[]> {
+        return await this.unitModel.find().exec();
+    }
+    async removeUnit(unit_id: string): Promise<void> {
+        // Find & delete categories depends on that unit
+        // Find & delete prototypes depends on that category
+        // Find & delete products in all stocks on that prototypes
+
+        await this.unitModel.findByIdAndRemove(unit_id).exec();
+        let categories = await this.categoryModel.find({ _unit: unit_id }).exec();
+        let prototypes = [];
+
+    }
+
 }
