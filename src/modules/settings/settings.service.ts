@@ -30,7 +30,17 @@ export class SettingsService {
   }
 
   async createProduct(product: CreateProductDto): Promise<Product> {
-    return await new this.productModel(product).save();
+    let _product = await new this.productModel(product).save();
+    let stocks = await this.stockModel.find().exec();
+    Promise.all([
+      ...stocks.map(_stock => {
+        new this.balanceModel({
+          _stock,
+          _product,
+        }).save();
+      }),
+    ]);
+    return _product;
   }
 
   async updateProduct(id: string, product: UpdateProductDto): Promise<Product> {
@@ -47,7 +57,17 @@ export class SettingsService {
   }
 
   async createStock(stock: CreateStockDto): Promise<Stock> {
-    return await new this.stockModel(stock).save();
+    let _stock = await new this.stockModel(stock).save();
+    let products = await this.productModel.find().exec();
+    Promise.all([
+      ...products.map(_product => {
+        new this.balanceModel({
+          _stock,
+          _product,
+        }).save();
+      }),
+    ]);
+    return _stock;
   }
 
   async removeStock(id: string): Promise<Stock> {
