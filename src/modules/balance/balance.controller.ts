@@ -6,5 +6,7 @@ export class BalanceController {
   constructor(private readonly balanceService: BalanceService) {}
 
   @Get('/')
-  async fetchBalance(@Query() options) {}
+  async fetchBalance(@Query() options) {
+    return await this.balanceService.testBalance(options);
+  }
 }
