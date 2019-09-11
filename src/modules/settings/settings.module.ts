@@ -9,10 +9,10 @@ import {
   ProductRef,
   ProductSchema,
 } from './schemas';
+import { BalanceRef, BalanceSchema } from '../balance/schemas/balance.schema';
 
 import { SettingsController } from './settings.controller';
 import { SettingsService } from './settings.service';
-import { BalanceRef, BalanceSchema } from '../balance/schemas/balance.schema';
 
 @Module({
   imports: [
