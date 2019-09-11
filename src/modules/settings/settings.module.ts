@@ -4,8 +4,6 @@ import { MongooseModule } from '@nestjs/mongoose';
 import {
   CategoryRef,
   CategorySchema,
-  PrototypeRef,
-  PrototypeSchema,
   StockRef,
   StockSchema,
   ProductRef,
@@ -19,7 +17,6 @@ import { SettingsService } from './settings.service';
   imports: [
     MongooseModule.forFeature([
       { name: CategoryRef, schema: CategorySchema },
-      { name: PrototypeRef, schema: PrototypeSchema },
       { name: StockRef, schema: StockSchema },
       { name: ProductRef, schema: ProductSchema }
     ]),

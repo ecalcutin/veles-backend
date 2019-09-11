@@ -3,10 +3,8 @@ import { BalanceService } from './balance.service';
 
 @Controller('balances')
 export class BalanceController {
-    constructor(private readonly balanceService: BalanceService) { }
+  constructor(private readonly balanceService: BalanceService) {}
 
-    @Get('/')
-    async fetchBalance(@Query() options) {
-        return await this.balanceService.getBalance(options);
-    }
+  @Get('/')
+  async fetchBalance(@Query() options) {}
 }
