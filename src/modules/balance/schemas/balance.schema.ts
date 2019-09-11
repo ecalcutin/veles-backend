@@ -7,10 +7,12 @@ export const BalanceSchema = new Schema(
   {
     _product: {
       type: Schema.Types.ObjectId,
+      ref: ProductRef,
       required: true,
     },
     _stock: {
       type: Schema.Types.ObjectId,
+      ref: StockRef,
       required: true,
     },
   },
