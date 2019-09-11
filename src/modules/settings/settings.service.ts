@@ -10,6 +10,8 @@ import {
   CreateCategoryDto,
   UpdateProductDto,
 } from './dto';
+import { BalanceRef } from '../balance/schemas/balance.schema';
+import { Balance } from '../balance/interfaces/balance.interface';
 
 @Injectable()
 export class SettingsService {
@@ -17,6 +19,7 @@ export class SettingsService {
     @InjectModel(StockRef) private readonly stockModel: Model<Stock>,
     @InjectModel(CategoryRef) private readonly categoryModel: Model<Category>,
     @InjectModel(ProductRef) private readonly productModel: Model<Product>,
+    @InjectModel(BalanceRef) private readonly balanceModel: Model<Balance>,
   ) {}
 
   async getProducts(): Promise<Product[]> {
