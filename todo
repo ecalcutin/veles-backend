@@ -3,8 +3,4 @@ remove all collection on TEST init
 make config for test & production
 !!!!
 
-
-jest initialize global testing module
-using chalk (colored logger)
-
-when removing -> response with remove count
+Transaction -> type -> history & calculate outcome/income moving items
