@@ -28,7 +28,7 @@ export class TransactionService {
     product_id: string,
     date: Date,
   ): Promise<number> {
-    let startDate = moment('2019-09-12')
+    let startDate = moment('2019-09-11')
       .startOf('day')
       .toDate();
     let endDate = moment('2019-09-20')
@@ -48,54 +48,31 @@ export class TransactionService {
         {
           $group: {
             _id: '$_product',
-            startIncome: {
-              $sum: {
-                $cond: [{ $lte: ['$createdAt', startDate] }, '$income', 0],
-              },
-            },
-            startOutcome: {
-              $sum: {
-                $cond: [{ $lte: ['$createdAt', startDate] }, '$outcome', 0],
-              },
-            },
-            totalIncome: {
-              $sum: '$income',
-            },
-            totalOutcome: {
-              $sum: '$outcome',
-            },
-          },
-        },
-        {
-          $group: {
-            _id: '$_id',
             startBalance: {
               $sum: {
-                $subtract: ['$startIncome', '$startOutcome'],
-              },
+                $cond: [{ $lte: ['$createdAt', startDate] }, {
+                  $subtract: ['$income', '$outcome']
+                }, 0]
+              }
             },
             endBalance: {
               $sum: {
-                $subtract: ['$totalIncome', '$totalOutcome'],
-              },
+                $subtract: ['$income', '$outcome']
+              }
             },
             totalIncome: {
-              $sum: '$totalIncome',
+              $sum: {
+                $cond: [{ $gte: ['$createdAt', startDate] }, '$income', 0]
+              }
             },
             totalOutcome: {
-              $sum: '$totalOutcome',
+              $sum: {
+                $cond: [{ $gte: ['$createdAt', startDate] }, '$outcome', 0]
+              }
             },
           },
         },
-        {
-          $project: {
-            _id: 1,
-            startBalance: 1,
-            endBalance: 1,
-            totalIncome: 1,
-            totalOutcome: 1,
-          },
-        },
+
       ])
       .exec();
     console.log(aggregated);
