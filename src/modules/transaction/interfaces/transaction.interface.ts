@@ -1,6 +1,6 @@
 import { Document } from 'mongoose';
 
-export interface Balance extends Document {
+export interface Transaction extends Document {
   readonly _product: string;
   readonly _stock: string;
 }

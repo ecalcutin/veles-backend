@@ -3,8 +3,8 @@ import moment from 'moment';
 
 import { ProductRef, StockRef } from '../../settings/schemas';
 
-export const BalanceRef = 'Balance';
-export const BalanceSchema = new Schema(
+export const TransactionRef = 'Transaction';
+export const TransactionSchema = new Schema(
   {
     _product: {
       type: Schema.Types.ObjectId,

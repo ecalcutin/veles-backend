@@ -9,7 +9,10 @@ import {
   ProductRef,
   ProductSchema,
 } from './schemas';
-import { BalanceRef, BalanceSchema } from '../balance/schemas/balance.schema';
+import {
+  TransactionRef,
+  TransactionSchema,
+} from '../transaction/schemas/transaction.schema';
 
 import { SettingsController } from './settings.controller';
 import { SettingsService } from './settings.service';
@@ -20,7 +23,7 @@ import { SettingsService } from './settings.service';
       { name: CategoryRef, schema: CategorySchema },
       { name: StockRef, schema: StockSchema },
       { name: ProductRef, schema: ProductSchema },
-      { name: BalanceRef, schema: BalanceSchema },
+      { name: TransactionRef, schema: TransactionSchema },
     ]),
   ],
   controllers: [SettingsController],

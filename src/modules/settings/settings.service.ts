@@ -10,8 +10,8 @@ import {
   CreateCategoryDto,
   UpdateProductDto,
 } from './dto';
-import { BalanceRef } from '../balance/schemas/balance.schema';
-import { Balance } from '../balance/interfaces/balance.interface';
+import { TransactionRef } from '../transaction/schemas/transaction.schema';
+import { Transaction } from '../transaction/interfaces/transaction.interface';
 
 @Injectable()
 export class SettingsService {
@@ -19,7 +19,8 @@ export class SettingsService {
     @InjectModel(StockRef) private readonly stockModel: Model<Stock>,
     @InjectModel(CategoryRef) private readonly categoryModel: Model<Category>,
     @InjectModel(ProductRef) private readonly productModel: Model<Product>,
-    @InjectModel(BalanceRef) private readonly balanceModel: Model<Balance>,
+    @InjectModel(TransactionRef)
+    private readonly transactionModel: Model<Transaction>,
   ) {}
 
   async getProducts(): Promise<Product[]> {
@@ -30,17 +31,7 @@ export class SettingsService {
   }
 
   async createProduct(product: CreateProductDto): Promise<Product> {
-    let _product = await new this.productModel(product).save();
-    let stocks = await this.stockModel.find().exec();
-    Promise.all([
-      ...stocks.map(_stock => {
-        new this.balanceModel({
-          _stock,
-          _product,
-        }).save();
-      }),
-    ]);
-    return _product;
+    return await new this.productModel(product).save();
   }
 
   async updateProduct(id: string, product: UpdateProductDto): Promise<Product> {
@@ -48,7 +39,6 @@ export class SettingsService {
   }
 
   async removeProduct(id: string): Promise<Product> {
-    // to-do remove balances
     return await this.productModel.findByIdAndRemove(id).exec();
   }
 
@@ -57,17 +47,7 @@ export class SettingsService {
   }
 
   async createStock(stock: CreateStockDto): Promise<Stock> {
-    let _stock = await new this.stockModel(stock).save();
-    let products = await this.productModel.find().exec();
-    Promise.all([
-      ...products.map(_product => {
-        new this.balanceModel({
-          _stock,
-          _product,
-        }).save();
-      }),
-    ]);
-    return _stock;
+    return await new this.stockModel(stock).save();
   }
 
   async removeStock(id: string): Promise<Stock> {
