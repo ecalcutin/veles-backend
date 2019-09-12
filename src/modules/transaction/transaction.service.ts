@@ -12,33 +12,23 @@ export class TransactionService {
   constructor(
     @InjectModel(TransactionRef)
     private readonly transactionModel: Model<Transaction>,
-  ) {
-    // this.getNearestBalance();
-    this.calculateBalance(
-      '5d7a2030266769200c0ffb4e',
-      '5d7a202c266769200c0ffb4d',
-      moment()
-        .endOf('day')
-        .toDate(),
-    );
-  }
+  ) { }
 
-  async calculateBalance(
+  async calculateBalances(
     stock_id: string,
-    product_id: string,
-    date: Date,
+    start: Date,
+    end: Date
   ): Promise<number> {
-    let startDate = moment('2019-09-11')
+    let startDate = moment(start)
       .startOf('day')
       .toDate();
-    let endDate = moment('2019-09-20')
+    let endDate = moment(end)
       .endOf('day')
       .toDate();
     let aggregated = await this.transactionModel
       .aggregate([
         {
           $match: {
-            _product: new ObjectID(product_id),
             _stock: new ObjectID(stock_id),
             createdAt: {
               $lte: endDate,
@@ -72,10 +62,8 @@ export class TransactionService {
             },
           },
         },
-
       ])
       .exec();
-    console.log(aggregated);
     return aggregated;
   }
 
