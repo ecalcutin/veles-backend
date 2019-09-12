@@ -18,7 +18,7 @@ export class TransactionService {
     stock_id: string,
     start: string | Date,
     end: string | Date
-  ): Promise<number> {
+  ): Promise<any> {
     let startDate = moment(start)
       .startOf('day')
       .toDate();
@@ -40,24 +40,38 @@ export class TransactionService {
             _id: '$_product',
             startBalance: {
               $sum: {
-                $cond: [{ $lte: ['$createdAt', startDate] }, {
-                  $subtract: ['$income', '$outcome']
-                }, 0]
+                $cond: [{ $lte: ['$createdAt', startDate] }, "$change", 0]
               }
             },
             endBalance: {
-              $sum: {
-                $subtract: ['$income', '$outcome']
-              }
+              $sum: "$change"
             },
             totalIncome: {
               $sum: {
-                $cond: [{ $gte: ['$createdAt', startDate] }, '$income', 0]
+                $cond: [
+                  {
+                    $and: [
+                      { $gte: ['$createdAt', startDate] },
+                      { $gt: ["$change", 0] }
+                    ]
+                  },
+                  "$change",
+                  0
+                ]
               }
             },
             totalOutcome: {
               $sum: {
-                $cond: [{ $gte: ['$createdAt', startDate] }, '$outcome', 0]
+                $cond: [
+                  {
+                    $and: [
+                      { $gte: ['$createdAt', startDate] },
+                      { $lt: ["$change", 0] }
+                    ]
+                  },
+                  "$change",
+                  0
+                ]
               }
             },
           },
@@ -86,6 +100,15 @@ export class TransactionService {
       ])
       .exec();
     return aggregated;
+  }
+
+  async createTransaction(product_id: string, stock_id: string, change: number): Promise<any> {
+    let transaction = await new this.transactionModel({
+      _product: product_id,
+      _stock: stock_id,
+      change
+    }).save();
+    return transaction;
   }
 
 }
