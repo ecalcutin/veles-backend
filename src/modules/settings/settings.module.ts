@@ -4,13 +4,15 @@ import { MongooseModule } from '@nestjs/mongoose';
 import {
   CategoryRef,
   CategorySchema,
-  PrototypeRef,
-  PrototypeSchema,
   StockRef,
   StockSchema,
   ProductRef,
   ProductSchema,
 } from './schemas';
+import {
+  TransactionRef,
+  TransactionSchema,
+} from '../transaction/schemas/transaction.schema';
 
 import { SettingsController } from './settings.controller';
 import { SettingsService } from './settings.service';
@@ -19,16 +21,12 @@ import { SettingsService } from './settings.service';
   imports: [
     MongooseModule.forFeature([
       { name: CategoryRef, schema: CategorySchema },
-      { name: PrototypeRef, schema: PrototypeSchema },
       { name: StockRef, schema: StockSchema },
-      { name: ProductRef, schema: ProductSchema }
+      { name: ProductRef, schema: ProductSchema },
+      { name: TransactionRef, schema: TransactionSchema },
     ]),
   ],
-  controllers: [
-    SettingsController,
-  ],
-  providers: [
-    SettingsService
-  ],
+  controllers: [SettingsController],
+  providers: [SettingsService],
 })
-export class SettingsModule { }
+export class SettingsModule {}

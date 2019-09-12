@@ -5,7 +5,7 @@ import { LoggerMiddleware } from './middlewares/logger';
 import { ConfigModule, ConfigService } from './config';
 
 import { SettingsModule } from './modules/settings';
-import { BalanceModule } from './modules/balance';
+import { TransactionModule } from './modules/transaction';
 import { CronModule } from './cron';
 
 @Module({
@@ -15,20 +15,18 @@ import { CronModule } from './cron';
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
-        uri: configService.get('DATABASE_URL')
+        uri: configService.get('DATABASE_URL'),
       }),
-      inject: [ConfigService]
+      inject: [ConfigService],
     }),
     SettingsModule,
-    BalanceModule
+    TransactionModule,
   ],
   controllers: [],
   providers: [],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(LoggerMiddleware)
-      .forRoutes('/')
+    consumer.apply(LoggerMiddleware).forRoutes('/');
   }
 }

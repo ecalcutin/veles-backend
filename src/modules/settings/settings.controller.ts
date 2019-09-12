@@ -1,67 +1,85 @@
-import { Controller, Get, Post, Put, Delete, Param, Body } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  Param,
+  Body,
+} from '@nestjs/common';
 
-import { Category, Stock, Prototype } from './interfaces';
-import { CreateCategoryDto, CreateStockDto, UpdateStockDto, CreatePrototypeDto, UpdatePrototypeDto } from './dto';
+import { Category, Stock, Product } from './interfaces';
+import {
+  CreateCategoryDto,
+  CreateStockDto,
+  UpdateStockDto,
+  CreateProductDto,
+  UpdateProductDto,
+} from './dto';
 import { SettingsService } from './settings.service';
 
 @Controller('settings')
 export class SettingsController {
-    constructor(private readonly settingsService: SettingsService) { }
+  constructor(private readonly settingsService: SettingsService) {}
 
-    @Get('categories')
-    async getCategories() {
-        return await this.settingsService.getCategories();
-    }
+  @Get('categories')
+  async getCategories() {
+    return await this.settingsService.getCategories();
+  }
 
-    @Post('categories')
-    async createCategory(@Body() category: CreateCategoryDto): Promise<Category> {
-        return await this.settingsService.createCategory(category);
-    }
+  @Post('categories')
+  async createCategory(@Body() category: CreateCategoryDto): Promise<Category> {
+    return await this.settingsService.createCategory(category);
+  }
 
-    @Delete('categories/:id')
-    async removeCategoryById(@Param('id') id: string): Promise<Category> {
-        return await this.settingsService.removeCategory(id);
-    }
+  @Delete('categories/:id')
+  async removeCategoryById(@Param('id') id: string): Promise<Category> {
+    return await this.settingsService.removeCategory(id);
+  }
 
+  @Get('stocks')
+  async getStocks() {
+    return await this.settingsService.getStocks();
+  }
 
-    @Get('stocks')
-    async getStocks() {
-        return await this.settingsService.getStocks();
-    }
+  @Post('stocks')
+  async createStock(@Body() stock: CreateStockDto): Promise<Stock> {
+    return await this.settingsService.createStock(stock);
+  }
 
-    @Post('stocks')
-    async createStock(@Body() stock: CreateStockDto): Promise<Stock> {
-        return await this.settingsService.createStock(stock);
-    }
+  @Put('stocks/:id')
+  async updateStockById(
+    @Body() stock: UpdateStockDto,
+    @Param('id') id: string,
+  ): Promise<Stock> {
+    return await this.settingsService.createStock(stock);
+  }
 
-    @Put('stocks/:id')
-    async updateStockById(@Body() stock: UpdateStockDto, @Param('id') id: string): Promise<Stock> {
-        return await this.settingsService.createStock(stock);
-    }
+  @Delete('stocks/:id')
+  async removeStockById(@Param('id') id: string): Promise<Category> {
+    return await this.settingsService.removeStock(id);
+  }
 
-    @Delete('stocks/:id')
-    async removeStockById(@Param('id') id: string): Promise<Category> {
-        return await this.settingsService.removeStock(id);
-    }
+  @Get('products')
+  async getProducts() {
+    return await this.settingsService.getProducts();
+  }
 
+  @Post('products')
+  async createProduct(@Body() product: CreateProductDto): Promise<Product> {
+    return await this.settingsService.createProduct(product);
+  }
 
-    @Get('prototypes')
-    async getPrototypes() {
-        return await this.settingsService.getPrototypes();
-    }
+  @Put('products/:id')
+  async updateProductById(
+    @Body() product: UpdateProductDto,
+    @Param('id') id: string,
+  ): Promise<Product> {
+    return await this.settingsService.updateProduct(id, product);
+  }
 
-    @Post('prototypes')
-    async createPrototype(@Body() prototype: CreatePrototypeDto): Promise<Prototype> {
-        return await this.settingsService.createPrototype(prototype);
-    }
-
-    @Put('prototypes/:id')
-    async updatePrototypeById(@Body() prototype: UpdatePrototypeDto, @Param('id') id: string): Promise<Prototype> {
-        return await this.settingsService.updatePrototype(id, prototype);
-    }
-
-    @Delete('prototypes/:id')
-    async removePrototypeById(@Param('id') id: string): Promise<Prototype> {
-        return await this.settingsService.removePrototype(id);
-    }
+  @Delete('products/:id')
+  async removeProductById(@Param('id') id: string): Promise<Product> {
+    return await this.settingsService.removeProduct(id);
+  }
 }
