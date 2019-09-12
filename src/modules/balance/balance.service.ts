@@ -89,6 +89,17 @@ export class BalanceService {
             balance: 1,
           },
         },
+        {
+          $lookup: {
+            from: 'products',
+            localField: '_id',
+            foreignField: '_id',
+            as: 'product',
+          },
+        },
+        {
+          $unwind: '$product',
+        },
       ])
       .exec();
 
