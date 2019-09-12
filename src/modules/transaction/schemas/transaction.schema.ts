@@ -24,6 +24,9 @@ export const TransactionSchema = new Schema(
       type: Number,
       default: 0,
     },
+    action: {
+      type: String,
+    },
   },
   {
     timestamps: true,

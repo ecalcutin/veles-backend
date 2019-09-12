@@ -5,4 +5,5 @@ export interface Transaction extends Document {
   readonly _stock: string;
   readonly income: number;
   readonly outcome: number;
+  readonly action: string;
 }
