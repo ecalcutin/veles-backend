@@ -3,7 +3,7 @@ import moment from 'moment';
 
 import { ProductRef, StockRef } from '../../settings/schemas';
 
-export const TransactionRef = 'Balance';
+export const TransactionRef = 'Transactions';
 export const TransactionSchema = new Schema(
   {
     _product: {
@@ -16,13 +16,12 @@ export const TransactionSchema = new Schema(
       ref: StockRef,
       required: true,
     },
-    income: {
+    change: {
       type: Number,
-      default: 0,
-    },
-    outcome: {
-      type: Number,
-      default: 0,
+      validate: {
+        validator: (value: number) => value !== 0
+      },
+      required: true
     },
     action: {
       type: String,
