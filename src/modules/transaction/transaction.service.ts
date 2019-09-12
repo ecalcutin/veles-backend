@@ -16,8 +16,8 @@ export class TransactionService {
 
   async calculateBalances(
     stock_id: string,
-    start: Date,
-    end: Date
+    start: string | Date,
+    end: string | Date
   ): Promise<number> {
     let startDate = moment(start)
       .startOf('day')
@@ -61,7 +61,28 @@ export class TransactionService {
               }
             },
           },
+        }, {
+          $lookup: {
+            from: 'products',
+            localField: '_id',
+            foreignField: '_id',
+            as: 'product'
+          }
         },
+        {
+          $unwind: '$product'
+        },
+        {
+          $lookup: {
+            from: 'categories',
+            localField: 'product._category',
+            foreignField: '_id',
+            as: 'category'
+          }
+        },
+        {
+          $unwind: '$category'
+        }
       ])
       .exec();
     return aggregated;
