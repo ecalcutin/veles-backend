@@ -89,17 +89,6 @@ export class BalanceService {
             balance: 1,
           },
         },
-        // {
-        //   $match: {
-        //     createdAt: {
-        //       $lte: moment().toDate(),
-        //       $gte: moment()
-        //         .subtract(2, 'days')
-        //         .startOf('day')
-        //         .toDate(),
-        //     },
-        //   },
-        // },
       ])
       .exec();
 
