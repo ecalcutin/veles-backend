@@ -3,4 +3,6 @@ remove all collection on TEST init
 make config for test & production
 !!!!
 
+SYNC SERVER TIME
+
 Transaction -> type -> history & calculate outcome/income moving items
