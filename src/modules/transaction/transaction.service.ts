@@ -12,12 +12,12 @@ export class TransactionService {
   constructor(
     @InjectModel(TransactionRef)
     private readonly transactionModel: Model<Transaction>,
-  ) { }
+  ) {}
 
   async calculateBalances(
     stock_id: string,
     start: string | Date,
-    end: string | Date
+    end: string | Date,
   ): Promise<any> {
     let startDate = moment(start)
       .startOf('day')
@@ -40,11 +40,11 @@ export class TransactionService {
             _id: '$_product',
             startBalance: {
               $sum: {
-                $cond: [{ $lte: ['$createdAt', startDate] }, "$change", 0]
-              }
+                $cond: [{ $lte: ['$createdAt', startDate] }, '$change', 0],
+              },
             },
             endBalance: {
-              $sum: "$change"
+              $sum: '$change',
             },
             totalIncome: {
               $sum: {
@@ -52,13 +52,13 @@ export class TransactionService {
                   {
                     $and: [
                       { $gte: ['$createdAt', startDate] },
-                      { $gt: ["$change", 0] }
-                    ]
+                      { $gt: ['$change', 0] },
+                    ],
                   },
-                  "$change",
-                  0
-                ]
-              }
+                  '$change',
+                  0,
+                ],
+              },
             },
             totalOutcome: {
               $sum: {
@@ -66,49 +66,55 @@ export class TransactionService {
                   {
                     $and: [
                       { $gte: ['$createdAt', startDate] },
-                      { $lt: ["$change", 0] }
-                    ]
+                      { $lt: ['$change', 0] },
+                    ],
                   },
-                  "$change",
-                  0
-                ]
-              }
+                  '$change',
+                  0,
+                ],
+              },
             },
           },
-        }, {
+        },
+        {
           $lookup: {
             from: 'products',
             localField: '_id',
             foreignField: '_id',
-            as: 'product'
-          }
+            as: 'product',
+          },
         },
         {
-          $unwind: '$product'
+          $unwind: '$product',
         },
         {
           $lookup: {
             from: 'categories',
             localField: 'product._category',
             foreignField: '_id',
-            as: 'category'
-          }
+            as: 'category',
+          },
         },
         {
-          $unwind: '$category'
-        }
+          $unwind: '$category',
+        },
       ])
       .exec();
     return aggregated;
   }
 
-  async createTransaction(product_id: string, stock_id: string, change: number): Promise<any> {
+  async createTransaction(
+    product_id: string,
+    stock_id: string,
+    change: number,
+    action: string,
+  ): Promise<any> {
     let transaction = await new this.transactionModel({
       _product: product_id,
       _stock: stock_id,
-      change
+      change,
+      action,
     }).save();
     return transaction;
   }
-
 }

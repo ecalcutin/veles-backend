@@ -3,23 +3,32 @@ import { TransactionService } from './transaction.service';
 
 @Controller('transactions')
 export class TransactionController {
-  constructor(private readonly transactionService: TransactionService) { }
+  constructor(private readonly transactionService: TransactionService) {}
 
   @Get('/')
   async calculateBalances(
     @Query('stock_id') stock_id: string,
     @Query('startDate') startDate: string,
-    @Query('endDate') endDate: string
+    @Query('endDate') endDate: string,
   ) {
-    return await this.transactionService.calculateBalances(stock_id, startDate, endDate);
+    return await this.transactionService.calculateBalances(
+      stock_id,
+      startDate,
+      endDate,
+    );
   }
 
-  @Post('/')
-  async createTransaction(
+  @Post('/production')
+  async makeProductionTransaction(
     @Body('stock_id') stock_id: string,
     @Body('product_id') product_id: string,
-    @Body('change') change: number
+    @Body('change') change: number,
   ) {
-    return this.transactionService.createTransaction(product_id, stock_id, change);
+    return this.transactionService.createTransaction(
+      product_id,
+      stock_id,
+      change,
+      'production',
+    );
   }
 }
