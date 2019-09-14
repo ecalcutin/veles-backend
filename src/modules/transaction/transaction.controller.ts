@@ -19,7 +19,7 @@ export class TransactionController {
   }
 
   @Post('/')
-  async makeProductionTransaction(
+  async makeTransaction(
     @Body('stock_id') stock_id: string,
     @Body('product_id') product_id: string,
     @Body('change') change: number,
