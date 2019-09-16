@@ -108,12 +108,14 @@ export class TransactionService {
     stock_id: string,
     change: number,
     action: string,
+    date: string,
   ): Promise<any> {
     let transaction = await new this.transactionModel({
       _product: product_id,
       _stock: stock_id,
       change,
       action,
+      date,
     }).save();
     return transaction;
   }

@@ -3,7 +3,7 @@ import { TransactionService } from './transaction.service';
 
 @Controller('transactions')
 export class TransactionController {
-  constructor(private readonly transactionService: TransactionService) { }
+  constructor(private readonly transactionService: TransactionService) {}
 
   @Get('/')
   async calculateBalances(
@@ -23,13 +23,14 @@ export class TransactionController {
     @Body('stock_id') stock_id: string,
     @Body('product_id') product_id: string,
     @Body('change') change: number,
-    @Body('action') action: string
+    @Body('action') action: string,
   ) {
     return this.transactionService.createTransaction(
       product_id,
       stock_id,
       change,
-      action
+      action,
+      '',
     );
   }
 }
