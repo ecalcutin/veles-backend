@@ -19,9 +19,13 @@ export const TransactionSchema = new Schema(
     change: {
       type: Number,
       validate: {
-        validator: (value: number) => value !== 0
+        validator: (value: number) => value !== 0,
       },
-      required: true
+      required: true,
+    },
+    date: {
+      type: String,
+      default: () => moment().format('YYYY-MM-DD'),
     },
     action: {
       type: String,
