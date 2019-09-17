@@ -1,15 +1,17 @@
-import { ObjectID } from 'bson';
-import { Product } from 'src/modules/settings/interfaces';
-
 interface Item {
-  product: Product;
+  product: any;
   quantity: number;
 }
 
-type TAction = 'production' | 'buy';
-export class CreateWaybillDto {
-  readonly date: string;
-  readonly action: TAction;
-  readonly destination: string;
+type TWaybill = 'production' | 'buy' | 'import';
+
+class WaybillDto {
   readonly products: Item[];
+  readonly action: TWaybill;
+  readonly date: string;
+  readonly destination_stock_id: string;
+}
+
+export class ProductionWaybillDto extends WaybillDto {
+  readonly source_stock_id: string;
 }
