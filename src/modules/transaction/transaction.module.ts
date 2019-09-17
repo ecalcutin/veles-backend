@@ -9,8 +9,6 @@ import {
   TransactionRef,
   TransactionSchema,
 } from './schemas/transaction.schema';
-import { WaybillController } from './waybill.controller';
-import { WaybillService } from './waybill.service';
 
 @Module({
   imports: [
@@ -19,7 +17,7 @@ import { WaybillService } from './waybill.service';
       { name: TransactionRef, schema: TransactionSchema },
     ]),
   ],
-  controllers: [TransactionController, WaybillController],
-  providers: [TransactionService, WaybillService],
+  controllers: [TransactionController],
+  providers: [TransactionService],
 })
 export class TransactionModule {}
