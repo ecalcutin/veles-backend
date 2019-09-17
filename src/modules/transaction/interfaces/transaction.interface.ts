@@ -1,8 +1,11 @@
 import { Document } from 'mongoose';
 
-export interface Transaction extends Document {
-  readonly _product: string;
-  readonly _stock: string;
-  readonly change: number;
-  readonly action: string;
+export interface TransactionOptions {
+  _product: string;
+  _stock: string;
+  change: number;
+  date: string;
+  action: string;
 }
+
+export interface Transaction extends TransactionOptions, Document {}
