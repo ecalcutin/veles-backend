@@ -1,11 +1,14 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { ObjectID } from 'bson';
 import { Model } from 'mongoose';
 import moment from 'moment';
 
 import { TransactionRef } from './schemas/transaction.schema';
-import { Transaction } from './interfaces/transaction.interface';
-import { ObjectID } from 'bson';
+import {
+  Transaction,
+  TransactionOptions,
+} from './interfaces/transaction.interface';
 
 @Injectable()
 export class TransactionService {
@@ -103,20 +106,7 @@ export class TransactionService {
     return aggregated;
   }
 
-  async createTransaction(
-    product_id: string,
-    stock_id: string,
-    change: number,
-    action: string,
-    date: string,
-  ): Promise<any> {
-    let transaction = await new this.transactionModel({
-      _product: product_id,
-      _stock: stock_id,
-      change,
-      action,
-      date,
-    }).save();
-    return transaction;
+  async createTransaction(transaction: TransactionOptions): Promise<any> {
+    await new this.transactionModel(transaction).save();
   }
 }
