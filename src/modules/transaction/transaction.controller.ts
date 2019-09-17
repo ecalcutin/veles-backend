@@ -54,4 +54,19 @@ export class TransactionController {
       }),
     ]);
   }
+
+  @Post('/waybill/import')
+  async createImportWaybill(@Body() waybill: CreateBuyWaybillDto) {
+    return await Promise.all([
+      ...waybill.products.map(item => {
+        this.transactionService.createTransaction({
+          _stock: waybill.destination,
+          _product: item.product._id,
+          change: item.quantity,
+          action: waybill.action,
+          date: waybill.date,
+        });
+      }),
+    ]);
+  }
 }
