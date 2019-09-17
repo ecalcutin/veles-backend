@@ -1,6 +1,6 @@
 import { Controller, Get, Query, Post, Body } from '@nestjs/common';
 import { TransactionService } from './transaction.service';
-import { CreateProductionWaybillDto } from './dto';
+import { CreateProductionWaybillDto, CreateBuyWaybillDto } from './dto';
 
 @Controller('transactions')
 export class TransactionController {
@@ -20,7 +20,7 @@ export class TransactionController {
   }
 
   @Post('/waybill/production')
-  async createWaybill(@Body() waybill: CreateProductionWaybillDto) {
+  async createProductionWaybill(@Body() waybill: CreateProductionWaybillDto) {
     // let rawMaterials = [];
     // create transactions for income to destination stock
     return await Promise.all([
@@ -38,5 +38,20 @@ export class TransactionController {
       }),
     ]);
     // create transactios for outcome raw materials to be consumed
+  }
+
+  @Post('/waybill/buy')
+  async createBuyWaybill(@Body() waybill: CreateBuyWaybillDto) {
+    return await Promise.all([
+      ...waybill.products.map(item => {
+        this.transactionService.createTransaction({
+          _stock: waybill.destination,
+          _product: item.product._id,
+          change: item.quantity,
+          action: waybill.action,
+          date: waybill.date,
+        });
+      }),
+    ]);
   }
 }

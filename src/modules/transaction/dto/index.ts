@@ -4,6 +4,13 @@ interface Item {
 }
 type TWaybill = 'production' | 'buy' | 'import';
 
+export class CreateBuyWaybillDto {
+  products: Item[];
+  date: string;
+  action: TWaybill = 'production';
+  // destination stock for ready products
+  destination: string;
+}
 export class CreateProductionWaybillDto {
   products: Item[];
   date: string;
