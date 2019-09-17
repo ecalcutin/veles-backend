@@ -1,3 +1,5 @@
+add waybill DTO validators
+
 remove all collection on TEST init
 
 make config for test & production
