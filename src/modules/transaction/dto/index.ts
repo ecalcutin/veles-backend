@@ -2,12 +2,28 @@ interface Item {
   product: any;
   quantity: number;
 }
-type TWaybill = 'production' | 'buy' | 'import';
+type TWaybill = 'production' | 'buy' | 'import' | 'return';
 
 export class CreateBuyWaybillDto {
   products: Item[];
   date: string;
-  action: TWaybill = 'production';
+  action: TWaybill = 'buy';
+  // destination stock for ready products
+  destination: string;
+}
+
+export class CreateImportWaybillDto {
+  products: Item[];
+  date: string;
+  action: TWaybill = 'import';
+  // destination stock for ready products
+  destination: string;
+}
+
+export class CreateReturnWaybillDto {
+  products: Item[];
+  date: string;
+  action: TWaybill = 'return';
   // destination stock for ready products
   destination: string;
 }
