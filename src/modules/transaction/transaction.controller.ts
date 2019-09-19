@@ -1,11 +1,6 @@
 import { Controller, Get, Query, Post, Body } from '@nestjs/common';
 import { TransactionService } from './transaction.service';
-import {
-  CreateProductionWaybillDto,
-  CreateBuyWaybillDto,
-  CreateImportWaybillDto,
-  CreateReturnWaybillDto,
-} from './dto';
+import { CreateWaybill } from './dto';
 
 @Controller('transactions')
 export class TransactionController {
@@ -25,7 +20,7 @@ export class TransactionController {
   }
 
   @Post('/waybill/production')
-  async createProductionWaybill(@Body() waybill: CreateProductionWaybillDto) {
+  async createProductionWaybill(@Body() waybill: CreateWaybill) {
     // let rawMaterials = [];
     // create transactions for income to destination stock
     return await Promise.all([
@@ -46,7 +41,7 @@ export class TransactionController {
   }
 
   @Post('/waybill/buy')
-  async createBuyWaybill(@Body() waybill: CreateBuyWaybillDto) {
+  async createBuyWaybill(@Body() waybill: CreateWaybill) {
     return await Promise.all([
       ...waybill.products.map(item => {
         this.transactionService.createTransaction({
@@ -61,7 +56,7 @@ export class TransactionController {
   }
 
   @Post('/waybill/import')
-  async createImportWaybill(@Body() waybill: CreateImportWaybillDto) {
+  async createImportWaybill(@Body() waybill: CreateWaybill) {
     return await Promise.all([
       ...waybill.products.map(item => {
         this.transactionService.createTransaction({
@@ -76,13 +71,48 @@ export class TransactionController {
   }
 
   @Post('/waybill/return')
-  async createReturnWaybill(@Body() waybill: CreateReturnWaybillDto) {
+  async createReturnWaybill(@Body() waybill: CreateWaybill) {
     return await Promise.all([
       ...waybill.products.map(item => {
         this.transactionService.createTransaction({
           _stock: waybill.destination,
           _product: item.product._id,
           change: item.quantity,
+          action: waybill.action,
+          date: waybill.date,
+        });
+      }),
+    ]);
+  }
+
+  @Post('/waybill/sell')
+  async createSellWaybill(@Body() waybill: CreateWaybill) {
+    return await Promise.all([
+      ...waybill.products.map(item => {
+        this.transactionService.createTransaction({
+          _stock: waybill.destination,
+          _product: item.product._id,
+          change: Math.abs(item.quantity) * -1,
+          action: waybill.action,
+          date: waybill.date,
+        });
+      }),
+    ]);
+  }
+
+  @Post('/waybill/realization')
+  async createRealizationWaybill(@Body() waybill: CreateWaybill) {
+    
+  }
+
+  @Post('/waybill/utilization')
+  async createUtilizationWaybill(@Body() waybill: CreateWaybill) {
+    return await Promise.all([
+      ...waybill.products.map(item => {
+        this.transactionService.createTransaction({
+          _stock: waybill.destination,
+          _product: item.product._id,
+          change: Math.abs(item.quantity) * -1,
           action: waybill.action,
           date: waybill.date,
         });
