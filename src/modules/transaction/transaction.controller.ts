@@ -102,7 +102,28 @@ export class TransactionController {
 
   @Post('/waybill/realization')
   async createRealizationWaybill(@Body() waybill: CreateWaybill) {
-    
+    await Promise.all([
+      ...waybill.products.map(item => {
+        this.transactionService.createTransaction({
+          _stock: waybill.source,
+          _product: item.product._id,
+          change: Math.abs(item.quantity) * -1,
+          action: waybill.action,
+          date: waybill.date,
+        });
+      }),
+    ]);
+    return await Promise.all([
+      ...waybill.products.map(item => {
+        this.transactionService.createTransaction({
+          _stock: waybill.destination,
+          _product: item.product._id,
+          change: Math.abs(item.quantity),
+          action: waybill.action,
+          date: waybill.date,
+        });
+      }),
+    ]);
   }
 
   @Post('/waybill/utilization')

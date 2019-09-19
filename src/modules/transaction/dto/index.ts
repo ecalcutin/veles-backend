@@ -9,4 +9,5 @@ export class CreateWaybill {
   date: string;
   action: TWaybill;
   destination: string;
+  source?: string;
 }
