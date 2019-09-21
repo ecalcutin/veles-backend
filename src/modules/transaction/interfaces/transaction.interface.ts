@@ -6,6 +6,7 @@ export interface TransactionOptions {
   change: number;
   date: string;
   action: string;
+  actionTitle: string;
 }
 
-export interface Transaction extends TransactionOptions, Document {}
+export interface Transaction extends TransactionOptions, Document { }

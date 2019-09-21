@@ -27,9 +27,8 @@ export const TransactionSchema = new Schema(
       type: String,
       default: () => moment().format('YYYY-MM-DD'),
     },
-    action: {
-      type: String,
-    },
+    action: String,
+    actionTitle: String
   },
   {
     timestamps: true,

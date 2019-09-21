@@ -32,6 +32,7 @@ export class TransactionController {
               _product: item._id,
               change: Math.abs(item.quantity),
               action: waybill.action,
+              actionTitle: waybill.actionTitle,
               date: waybill.date,
             });
           }),
@@ -45,6 +46,7 @@ export class TransactionController {
               _product: item._id,
               change: Math.abs(item.quantity) * -1,
               action: waybill.action,
+              actionTitle: waybill.actionTitle,
               date: waybill.date,
             });
           }),
@@ -56,6 +58,7 @@ export class TransactionController {
               _product: item._id,
               change: Math.abs(item.quantity),
               action: waybill.action,
+              actionTitle: waybill.actionTitle,
               date: waybill.date,
             });
           }),
@@ -71,6 +74,7 @@ export class TransactionController {
               _product: item._id,
               change: Math.abs(item.quantity) * -1,
               action: waybill.action,
+              actionTitle: waybill.actionTitle,
               date: waybill.date,
             });
           }),
@@ -84,6 +88,7 @@ export class TransactionController {
               _product: item._id,
               change: Math.abs(item.quantity) * -1,
               action: waybill.action,
+              actionTitle: waybill.actionTitle,
               date: waybill.date,
             });
           }),
