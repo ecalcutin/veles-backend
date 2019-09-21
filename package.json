@@ -19,10 +19,10 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "@nestjs/common": "^6.6.7",
-    "@nestjs/core": "^6.6.7",
+    "@nestjs/common": "^6.7.2",
+    "@nestjs/core": "^6.7.2",
     "@nestjs/mongoose": "^6.1.2",
-    "@nestjs/platform-express": "^6.6.7",
+    "@nestjs/platform-express": "^6.7.2",
     "class-validator": "^0.10.0",
     "cron": "^1.7.2",
     "dotenv": "^8.1.0",
@@ -32,7 +32,7 @@
     "rxjs": "^6.5.3"
   },
   "devDependencies": {
-    "@nestjs/testing": "^6.6.7",
+    "@nestjs/testing": "^6.7.2",
     "@types/cron": "^1.7.1",
     "@types/dotenv": "^6.1.1",
     "@types/express": "4.17.1",
@@ -40,13 +40,13 @@
     "@types/mongoose": "^5.5.17",
     "@types/node": "12.7.5",
     "@types/supertest": "2.0.8",
-    "cross-env": "^5.2.1",
+    "cross-env": "^6.0.0",
     "jest": "24.9.0",
     "prettier": "1.18.2",
     "supertest": "4.0.2",
     "ts-jest": "24.1.0",
-    "ts-node": "8.3.0",
-    "tsc-watch": "3.0.1",
+    "ts-node": "8.4.1",
+    "tsc-watch": "4.0.0",
     "tsconfig-paths": "3.9.0",
     "tslint": "5.20.0",
     "typescript": "3.6.3"
