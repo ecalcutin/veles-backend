@@ -7,6 +7,7 @@ export const WaybillRef = 'Waybill';
 export const WaybillSchema = new Schema(
   {
     actionTitle: String,
+    waybillType: String,
     _source: {
       type: Schema.Types.ObjectId,
       ref: StockRef,

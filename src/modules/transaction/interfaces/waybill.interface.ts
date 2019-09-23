@@ -9,5 +9,6 @@ export interface Waybill extends Document {
   readonly _source: string;
   readonly _destination: string;
   readonly date: string;
+  readonly waybillType: string;
   readonly products: Product[];
 }

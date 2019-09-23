@@ -7,6 +7,7 @@ import { Waybill } from './interfaces';
 
 type TWaybill = {
   actionTitle: string;
+  waybillType: 'income' | 'outcome';
   source?: string;
   destination?: string;
   date: string;
@@ -17,7 +18,7 @@ type TWaybill = {
 export class WaybillService {
   constructor(
     @InjectModel(WaybillRef) private readonly waybillModel: Model<Waybill>,
-  ) {}
+  ) { }
 
   async createWaybill(waybill: TWaybill): Promise<Waybill> {
     if (!waybill.source) delete waybill.source;
