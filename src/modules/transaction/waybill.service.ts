@@ -44,7 +44,7 @@ export class WaybillService {
         populate: {
           path: '_category'
         }
-      }])
+      }]).sort({ createdAt: 1 })
       .exec();
   }
 }
