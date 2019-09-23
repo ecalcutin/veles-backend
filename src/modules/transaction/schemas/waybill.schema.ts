@@ -6,8 +6,12 @@ import { ProductRef, StockRef } from '../../settings/schemas';
 export const WaybillRef = 'Waybill';
 export const WaybillSchema = new Schema(
   {
-    actionTitle: String,
-    waybillType: String,
+    action: {
+      type: Object
+    },
+    type: {
+      type: String
+    },
     _source: {
       type: Schema.Types.ObjectId,
       ref: StockRef,

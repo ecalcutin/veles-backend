@@ -5,10 +5,10 @@ interface Product {
   readonly quantity: number;
 }
 export interface Waybill extends Document {
-  readonly actionTitle: string;
+  readonly action: string;
   readonly _source: string;
   readonly _destination: string;
   readonly date: string;
-  readonly waybillType: string;
+  readonly type: string;
   readonly products: Product[];
 }

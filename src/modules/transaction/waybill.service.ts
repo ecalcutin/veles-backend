@@ -6,8 +6,11 @@ import { WaybillRef } from './schemas';
 import { Waybill } from './interfaces';
 
 type TWaybill = {
-  actionTitle: string;
-  waybillType: 'income' | 'outcome';
+  action: {
+    type: string;
+    title: string;
+  };
+  type: 'income' | 'outcome';
   source?: string;
   destination?: string;
   date: string;
@@ -24,11 +27,12 @@ export class WaybillService {
     if (!waybill.source) delete waybill.source;
     if (!waybill.destination) delete waybill.destination;
     return await new this.waybillModel({
-      actionTitle: waybill.actionTitle,
+      action: waybill.action,
       _source: waybill.source,
       _destination: waybill.destination,
       products: waybill.products,
       date: waybill.date,
+      type: waybill.type
     }).save();
   }
 
