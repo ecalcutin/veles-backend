@@ -8,11 +8,15 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { TransactionService } from './transaction.service';
+import { WaybillService } from './waybill.service';
 import { CreateWaybill } from './dto';
 
 @Controller('transactions')
 export class TransactionController {
-  constructor(private readonly transactionService: TransactionService) {}
+  constructor(
+    private readonly transactionService: TransactionService,
+    private readonly waybillService: WaybillService,
+  ) {}
 
   @Get('/')
   async calculateBalances(
@@ -29,12 +33,7 @@ export class TransactionController {
 
   @Post('/waybill')
   async createWaybill(@Body() waybill: CreateWaybill) {
-    console.log(waybill);
-
-    // action: waybill.action,
-    // actionTitle: waybill.actionTitle,
-    // date: waybill.date,
-
+    await this.waybillService.createWaybill(waybill);
     switch (waybill.action) {
       case 'buy':
         await Promise.all([
