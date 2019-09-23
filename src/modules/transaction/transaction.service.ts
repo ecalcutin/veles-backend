@@ -4,11 +4,8 @@ import { ObjectID } from 'bson';
 import { Model } from 'mongoose';
 import moment from 'moment';
 
-import { TransactionRef } from './schemas/transaction.schema';
-import {
-  Transaction,
-  TransactionOptions,
-} from './interfaces/transaction.interface';
+import { TransactionRef } from './schemas';
+import { Transaction, TransactionOptions } from './interfaces';
 
 @Injectable()
 export class TransactionService {
