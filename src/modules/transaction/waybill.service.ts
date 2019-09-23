@@ -6,10 +6,11 @@ import { WaybillRef } from './schemas';
 import { Waybill } from './interfaces';
 
 type TWaybill = {
-  _source: string;
-  _destination: string;
+  actionTitle: string;
+  source?: string;
+  destination?: string;
   date: string;
-  items: Array<any>;
+  products: Array<any>;
 };
 
 @Injectable()
@@ -19,6 +20,14 @@ export class WaybillService {
   ) {}
 
   async createWaybill(waybill: TWaybill): Promise<Waybill> {
-    return await new this.waybillModel(waybill).save();
+    if (!waybill.source) delete waybill.source;
+    if (!waybill.destination) delete waybill.destination;
+    return await new this.waybillModel({
+      actionTitle: waybill.actionTitle,
+      _source: waybill.source,
+      _destination: waybill.destination,
+      products: waybill.products,
+      date: waybill.date,
+    }).save();
   }
 }
