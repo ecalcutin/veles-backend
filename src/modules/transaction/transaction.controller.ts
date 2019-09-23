@@ -17,7 +17,7 @@ export class TransactionController {
   constructor(
     private readonly transactionService: TransactionService,
     private readonly waybillService: WaybillService,
-  ) {}
+  ) { }
 
   @Get('/')
   async calculateBalances(
@@ -34,9 +34,10 @@ export class TransactionController {
 
   @Post('/waybill')
   async createWaybill(@Body() waybill: CreateWaybill) {
-    await this.waybillService.createWaybill(waybill);
+
     switch (waybill.action) {
       case 'buy':
+        await this.waybillService.createWaybill({ ...waybill, waybillType: 'income' });
         await Promise.all([
           ...waybill.products.map(item => {
             this.transactionService.createTransaction({
@@ -48,6 +49,7 @@ export class TransactionController {
         ]);
         break;
       case 'move':
+        await this.waybillService.createWaybill({ ...waybill, waybillType: 'outcome' });
         await Promise.all([
           ...waybill.products.map(item => {
             this.transactionService.createTransaction({
@@ -57,6 +59,7 @@ export class TransactionController {
             });
           }),
         ]);
+        await this.waybillService.createWaybill({ ...waybill, waybillType: 'income' });
         await Promise.all([
           ...waybill.products.map(item => {
             this.transactionService.createTransaction({
@@ -70,6 +73,7 @@ export class TransactionController {
       case 'production':
         break;
       case 'sell':
+        await this.waybillService.createWaybill({ ...waybill, waybillType: 'outcome' });
         await Promise.all([
           ...waybill.products.map(item => {
             this.transactionService.createTransaction({
@@ -81,6 +85,7 @@ export class TransactionController {
         ]);
         break;
       case 'utilization':
+        await this.waybillService.createWaybill({ ...waybill, waybillType: 'outcome' });
         await Promise.all([
           ...waybill.products.map(item => {
             this.transactionService.createTransaction({
