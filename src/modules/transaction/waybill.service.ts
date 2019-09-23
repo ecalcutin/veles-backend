@@ -39,7 +39,12 @@ export class WaybillService {
   async findWaybills(): Promise<Waybill[]> {
     return await this.waybillModel
       .find()
-      .populate(['products._id', '_source', '_destination'])
+      .populate(['_source', '_destination', {
+        path: 'products._id',
+        populate: {
+          path: '_category'
+        }
+      }])
       .exec();
   }
 }
