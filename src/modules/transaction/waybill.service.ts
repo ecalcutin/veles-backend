@@ -13,7 +13,7 @@ type TWaybill = {
 };
 
 @Injectable()
-export class TransactionService {
+export class WaybillService {
   constructor(
     @InjectModel(WaybillRef) private readonly waybillModel: Model<Waybill>,
   ) {}
