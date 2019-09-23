@@ -30,4 +30,8 @@ export class WaybillService {
       date: waybill.date,
     }).save();
   }
+
+  async findWaybills(): Promise<Waybill[]> {
+    return await this.waybillModel.find().exec();
+  }
 }

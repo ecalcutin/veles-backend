@@ -10,6 +10,7 @@ import {
 import { TransactionService } from './transaction.service';
 import { WaybillService } from './waybill.service';
 import { CreateWaybill } from './dto';
+import { Waybill } from './interfaces';
 
 @Controller('transactions')
 export class TransactionController {
@@ -93,5 +94,10 @@ export class TransactionController {
       default:
         throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
     }
+  }
+
+  @Get('/waybill')
+  async findWaybills(): Promise<Waybill[]> {
+    return await this.waybillService.findWaybills();
   }
 }
