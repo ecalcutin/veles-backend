@@ -23,12 +23,6 @@ export const TransactionSchema = new Schema(
       },
       required: true,
     },
-    date: {
-      type: String,
-      default: () => moment().format('YYYY-MM-DD'),
-    },
-    action: String,
-    actionTitle: String
   },
   {
     timestamps: true,

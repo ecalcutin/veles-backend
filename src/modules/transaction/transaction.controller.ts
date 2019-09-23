@@ -1,10 +1,18 @@
-import { Controller, Get, Query, Post, Body, HttpException, HttpStatus } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Query,
+  Post,
+  Body,
+  HttpException,
+  HttpStatus,
+} from '@nestjs/common';
 import { TransactionService } from './transaction.service';
 import { CreateWaybill } from './dto';
 
 @Controller('transactions')
 export class TransactionController {
-  constructor(private readonly transactionService: TransactionService) { }
+  constructor(private readonly transactionService: TransactionService) {}
 
   @Get('/')
   async calculateBalances(
@@ -23,6 +31,10 @@ export class TransactionController {
   async createWaybill(@Body() waybill: CreateWaybill) {
     console.log(waybill);
 
+    // action: waybill.action,
+    // actionTitle: waybill.actionTitle,
+    // date: waybill.date,
+
     switch (waybill.action) {
       case 'buy':
         await Promise.all([
@@ -31,9 +43,6 @@ export class TransactionController {
               _stock: waybill.destination,
               _product: item._id,
               change: Math.abs(item.quantity),
-              action: waybill.action,
-              actionTitle: waybill.actionTitle,
-              date: waybill.date,
             });
           }),
         ]);
@@ -45,9 +54,6 @@ export class TransactionController {
               _stock: waybill.source,
               _product: item._id,
               change: Math.abs(item.quantity) * -1,
-              action: waybill.action,
-              actionTitle: waybill.actionTitle,
-              date: waybill.date,
             });
           }),
         ]);
@@ -57,9 +63,6 @@ export class TransactionController {
               _stock: waybill.destination,
               _product: item._id,
               change: Math.abs(item.quantity),
-              action: waybill.action,
-              actionTitle: waybill.actionTitle,
-              date: waybill.date,
             });
           }),
         ]);
@@ -73,9 +76,6 @@ export class TransactionController {
               _stock: waybill.source,
               _product: item._id,
               change: Math.abs(item.quantity) * -1,
-              action: waybill.action,
-              actionTitle: waybill.actionTitle,
-              date: waybill.date,
             });
           }),
         ]);
@@ -87,15 +87,12 @@ export class TransactionController {
               _stock: waybill.source,
               _product: item._id,
               change: Math.abs(item.quantity) * -1,
-              action: waybill.action,
-              actionTitle: waybill.actionTitle,
-              date: waybill.date,
             });
           }),
         ]);
         break;
       default:
-        throw new HttpException('Bad request', HttpStatus.BAD_REQUEST)
+        throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
     }
   }
 }
