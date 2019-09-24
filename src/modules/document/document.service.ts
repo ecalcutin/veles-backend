@@ -11,7 +11,6 @@ export class DocumentService {
   constructor() { }
 
   prepareWaybillDocument(data: Waybill): Readable {
-    console.log(data);
     let content = readFileSync(
       resolve(process.cwd(), 'templates', 'waybillTemplate.docx'),
       'binary',
@@ -28,7 +27,6 @@ export class DocumentService {
     } catch (err) {
       throw err;
     }
-
     let buff = doc.getZip().generate({ type: 'nodebuffer' });
     const stream = new Readable();
     stream.push(buff);
