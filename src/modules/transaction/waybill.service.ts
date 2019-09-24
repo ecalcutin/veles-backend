@@ -21,7 +21,7 @@ type TWaybill = {
 export class WaybillService {
   constructor(
     @InjectModel(WaybillRef) private readonly waybillModel: Model<Waybill>,
-  ) { }
+  ) {}
 
   async createWaybill(waybill: TWaybill): Promise<Waybill> {
     if (!waybill.source) delete waybill.source;
@@ -32,19 +32,28 @@ export class WaybillService {
       _destination: waybill.destination,
       products: waybill.products,
       date: waybill.date,
-      type: waybill.type
+      type: waybill.type,
     }).save();
   }
 
   async findWaybills(): Promise<Waybill[]> {
     return await this.waybillModel
       .find()
-      .populate(['_source', '_destination', {
-        path: 'products._id',
-        populate: {
-          path: '_category'
-        }
-      }]).sort({ createdAt: 1 })
+      .populate([
+        '_source',
+        '_destination',
+        {
+          path: 'products._id',
+          populate: {
+            path: '_category',
+          },
+        },
+      ])
+      .sort({ createdAt: 1 })
       .exec();
+  }
+
+  async getWaybillData(): Promise<Waybill> {
+    return await this.waybillModel.findOne().exec();
   }
 }
