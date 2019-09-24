@@ -126,7 +126,7 @@ export class TransactionController {
     @Param('id') id: string,
   ) {
     let waybill = await this.waybillService.getWaybillData(id);
-    let stream = this.documentService.prepareWaybillDocument(waybill);
+    let stream = this.documentService.prepareWaybillDocument(waybill.toObject());
     response.set({
       'Content-Type':
         'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
