@@ -53,7 +53,7 @@ export class WaybillService {
       .exec();
   }
 
-  async getWaybillData(): Promise<Waybill> {
-    return await this.waybillModel.findOne().exec();
+  async getWaybillData(id: string): Promise<Waybill> {
+    return await this.waybillModel.findById(id).exec();
   }
 }

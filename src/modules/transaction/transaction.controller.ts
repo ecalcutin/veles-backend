@@ -6,7 +6,11 @@ import {
   Body,
   HttpException,
   HttpStatus,
+  Res,
+  Param,
 } from '@nestjs/common';
+import { Response } from 'express';
+import { DocumentService } from '../document';
 import { TransactionService } from './transaction.service';
 import { WaybillService } from './waybill.service';
 import { CreateWaybill } from './dto';
@@ -17,7 +21,8 @@ export class TransactionController {
   constructor(
     private readonly transactionService: TransactionService,
     private readonly waybillService: WaybillService,
-  ) { }
+    private readonly documentService: DocumentService,
+  ) {}
 
   @Get('/')
   async calculateBalances(
@@ -34,7 +39,7 @@ export class TransactionController {
 
   @Post('/waybill')
   async createWaybill(@Body() waybill: CreateWaybill) {
-    console.log(waybill)
+    console.log(waybill);
     switch (waybill.action.type) {
       case 'buy':
         await this.waybillService.createWaybill({ ...waybill, type: 'income' });
@@ -49,7 +54,10 @@ export class TransactionController {
         ]);
         break;
       case 'move':
-        await this.waybillService.createWaybill({ ...waybill, type: 'outcome' });
+        await this.waybillService.createWaybill({
+          ...waybill,
+          type: 'outcome',
+        });
         await Promise.all([
           ...waybill.products.map(item => {
             this.transactionService.createTransaction({
@@ -73,7 +81,10 @@ export class TransactionController {
       case 'production':
         break;
       case 'sell':
-        await this.waybillService.createWaybill({ ...waybill, type: 'outcome' });
+        await this.waybillService.createWaybill({
+          ...waybill,
+          type: 'outcome',
+        });
         await Promise.all([
           ...waybill.products.map(item => {
             this.transactionService.createTransaction({
@@ -85,7 +96,10 @@ export class TransactionController {
         ]);
         break;
       case 'utilization':
-        await this.waybillService.createWaybill({ ...waybill, type: 'outcome' });
+        await this.waybillService.createWaybill({
+          ...waybill,
+          type: 'outcome',
+        });
         await Promise.all([
           ...waybill.products.map(item => {
             this.transactionService.createTransaction({
@@ -104,5 +118,24 @@ export class TransactionController {
   @Get('/waybill')
   async findWaybills(): Promise<Waybill[]> {
     return await this.waybillService.findWaybills();
+  }
+
+  @Get('/waybill/document/:id')
+  async getWaybillDocument(
+    @Res() response: Response,
+    @Param(':id') id: string,
+  ) {
+    console.log('Matched');
+    let waybill = await this.waybillService.getWaybillData(id);
+    let stream = this.documentService.prepareWaybillDocument(waybill);
+    response.set({
+      'Content-Type':
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      'Content-disposition': 'attachment; filename=someFile.docx',
+    });
+    stream.pipe(
+      response,
+      { end: true },
+    );
   }
 }

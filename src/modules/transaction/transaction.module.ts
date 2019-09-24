@@ -12,9 +12,11 @@ import {
   WaybillRef,
   WaybillSchema,
 } from './schemas';
+import { DocumentModule } from '../document';
 
 @Module({
   imports: [
+    DocumentModule,
     MongooseModule.forFeature([
       { name: ProductRef, schema: ProductSchema },
       { name: TransactionRef, schema: TransactionSchema },
