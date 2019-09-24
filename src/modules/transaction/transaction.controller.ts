@@ -130,7 +130,6 @@ export class TransactionController {
     response.set({
       'Content-Type':
         'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-      'Content-disposition': 'attachment; filename=someFile.docx',
     });
     stream.pipe(
       response,
