@@ -7,11 +7,13 @@ import { ConfigModule, ConfigService } from './config';
 import { SettingsModule } from './modules/settings';
 import { TransactionModule } from './modules/transaction';
 import { CronModule } from './cron';
+import { DocumentModule } from './modules/document';
 
 @Module({
   imports: [
     ConfigModule,
     CronModule,
+    DocumentModule,
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
