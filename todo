@@ -1,12 +1,7 @@
-add waybill DTO validators
-
 remove all collection on TEST init
 
-waybill separate
-creating waybill -> dont return !!!
+waybill fixed price !!!
 
 SYNC SERVER TIME
-
-waybill realization
 
 Production waybill -> to remove raw materials * quantity as outcome (production)
