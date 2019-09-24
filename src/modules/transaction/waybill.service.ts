@@ -21,7 +21,7 @@ type TWaybill = {
 export class WaybillService {
   constructor(
     @InjectModel(WaybillRef) private readonly waybillModel: Model<Waybill>,
-  ) {}
+  ) { }
 
   async createWaybill(waybill: TWaybill): Promise<Waybill> {
     if (!waybill.source) delete waybill.source;
@@ -54,6 +54,15 @@ export class WaybillService {
   }
 
   async getWaybillData(id: string): Promise<Waybill> {
-    return await this.waybillModel.findById(id).exec();
+    return await this.waybillModel.findById(id).populate([
+      '_source',
+      '_destination',
+      {
+        path: 'products._id',
+        populate: {
+          path: '_category',
+        },
+      },
+    ]).exec();
   }
 }
