@@ -8,7 +8,7 @@ import { Waybill } from '../transaction/interfaces';
 
 @Injectable()
 export class DocumentService {
-  constructor() {}
+  constructor() { }
 
   prepareWaybillDocument(data: Waybill): Readable {
     console.log(data);
@@ -19,11 +19,15 @@ export class DocumentService {
     let zip = new PizZip(content);
     let doc = new DocxTemplater();
     doc.loadZip(zip);
-
-    doc.setData({});
+    doc.setData({
+      date: data.date
+    });
 
     try {
-    } catch (err) {}
+      doc.render();
+    } catch (err) {
+      throw err;
+    }
 
     let buff = doc.getZip().generate({ type: 'nodebuffer' });
     const stream = new Readable();

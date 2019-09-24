@@ -22,7 +22,7 @@ export class TransactionController {
     private readonly transactionService: TransactionService,
     private readonly waybillService: WaybillService,
     private readonly documentService: DocumentService,
-  ) {}
+  ) { }
 
   @Get('/')
   async calculateBalances(
@@ -123,9 +123,8 @@ export class TransactionController {
   @Get('/waybill/document/:id')
   async getWaybillDocument(
     @Res() response: Response,
-    @Param(':id') id: string,
+    @Param('id') id: string,
   ) {
-    console.log('Matched');
     let waybill = await this.waybillService.getWaybillData(id);
     let stream = this.documentService.prepareWaybillDocument(waybill);
     response.set({
