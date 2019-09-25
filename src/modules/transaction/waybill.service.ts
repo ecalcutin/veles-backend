@@ -4,18 +4,7 @@ import { Model } from 'mongoose';
 
 import { WaybillRef } from './schemas';
 import { Waybill } from './interfaces';
-
-type TWaybill = {
-  action: {
-    type: string;
-    title: string;
-  };
-  type: 'income' | 'outcome';
-  source?: string;
-  destination?: string;
-  date: string;
-  products: Array<any>;
-};
+import { CreateWaybillDto } from './dto';
 
 @Injectable()
 export class WaybillService {
@@ -23,7 +12,7 @@ export class WaybillService {
     @InjectModel(WaybillRef) private readonly waybillModel: Model<Waybill>,
   ) {}
 
-  async createWaybill(waybill: TWaybill): Promise<Waybill> {
+  async createWaybill(waybill: CreateWaybillDto): Promise<Waybill> {
     if (!waybill.source) delete waybill.source;
     if (!waybill.destination) delete waybill.destination;
     return await new this.waybillModel({
@@ -32,7 +21,7 @@ export class WaybillService {
       _destination: waybill.destination,
       products: waybill.products,
       date: waybill.date,
-      type: waybill.type,
+      type: waybill.action.type,
     }).save();
   }
 
