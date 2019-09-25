@@ -1,4 +1,4 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { ObjectID } from 'bson';
 import { Model } from 'mongoose';
@@ -12,7 +12,7 @@ export class TransactionService {
   constructor(
     @InjectModel(TransactionRef)
     private readonly transactionModel: Model<Transaction>,
-  ) {}
+  ) { }
 
   async calculateBalances(
     stock_id: string,
@@ -103,7 +103,7 @@ export class TransactionService {
     return aggregated;
   }
 
-  async createTransaction(transaction: TransactionOptions): Promise<any> {
+  async createTransaction(transaction: TransactionOptions): Promise<void> {
     await new this.transactionModel(transaction).save();
   }
 }
