@@ -7,6 +7,16 @@ export const StockSchema = new Schema(
       type: String,
       required: true,
     },
+    waybill: {
+      prefix: {
+        type: String,
+        required: true,
+      },
+      number: {
+        type: Number,
+        default: 0,
+      },
+    },
   },
   {
     timestamps: true,
