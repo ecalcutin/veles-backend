@@ -1,17 +1,18 @@
 interface Item {
-  original: string;
+  _id: string;
   title: string;
+  category: string;
   quantity: number;
+  price: {
+    value: number;
+    type: 'retail' | 'wholesale'
+  };
 }
-type TWaybillChange = 'income' | 'outcome';
-type TWaybill = 'production' | 'move' | 'sell' | 'utilization' | 'buy';
 
 export class CreateWaybillDto {
   date: string;
   action: {
-    type: TWaybill;
-    change: TWaybillChange;
-    title: string;
+    type: 'production' | 'move' | 'sell' | 'utilization' | 'buy' | 'import';
   };
   source?: string;
   destination?: string;
