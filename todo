@@ -1,5 +1,9 @@
 remove all collection on TEST init
 
+interfaces for waybill, 
+
+
+chain delete -> deleting all all shit (category/stock -> transactions -> waybills)
 
 SYNC SERVER TIME
 
