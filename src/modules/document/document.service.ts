@@ -10,7 +10,7 @@ import { Waybill } from '../transaction/interfaces';
 
 @Injectable()
 export class DocumentService {
-  constructor() { }
+  constructor() {}
 
   prepareWaybillDocument(data: Waybill): Readable {
     let content = readFileSync(
@@ -21,7 +21,9 @@ export class DocumentService {
     let doc = new DocxTemplater();
     doc.loadZip(zip);
     doc.setData({
-      date: moment(data.date).locale('ru').format('от «DD» MMMM YYYY г.'),
+      date: moment(data.date)
+        .locale('ru')
+        .format('от «DD» MMMM YYYY г.'),
       destination: data._destination ? data._destination.title : '',
       source: data._source ? data._source.title : '',
       products: data.products.map((item, index) => ({
@@ -30,8 +32,9 @@ export class DocumentService {
         category: item.category,
         unit: item.unit,
         price_retail: item.price_retail,
-        quantity: item.quantity
-      }))
+        quantity: item.quantity,
+        retailSumm: item.price_retail * item.quantity,
+      })),
     });
 
     try {
