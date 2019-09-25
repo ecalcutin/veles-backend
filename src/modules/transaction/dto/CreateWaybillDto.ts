@@ -1,16 +1,17 @@
 interface Item {
-    _id: string;
-    quantity: number;
+  original: string;
+  title: string;
+  quantity: number;
 }
 type TWaybill = 'production' | 'move' | 'sell' | 'utilization' | 'buy';
 
 export class CreateWaybill {
-    date: string;
-    action: {
-        type: TWaybill,
-        title: string;
-    };
-    source?: string;
-    destination?: string;
-    products: Item[];
+  date: string;
+  action: {
+    type: TWaybill;
+    title: string;
+  };
+  source?: string;
+  destination?: string;
+  products: Item[];
 }
