@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 
-import { WaybillService } from './waybill.service';
 import { TransactionService } from './transaction.service';
 import { TransactionController } from './transaction.controller';
 
@@ -14,8 +13,6 @@ import {
 import {
   TransactionRef,
   TransactionSchema,
-  WaybillRef,
-  WaybillSchema,
 } from './schemas';
 import { DocumentModule } from '../document';
 
@@ -25,11 +22,10 @@ import { DocumentModule } from '../document';
     MongooseModule.forFeature([
       { name: ProductRef, schema: ProductSchema },
       { name: TransactionRef, schema: TransactionSchema },
-      { name: WaybillRef, schema: WaybillSchema },
       { name: StockRef, schema: StockSchema },
     ]),
   ],
   controllers: [TransactionController],
-  providers: [TransactionService, WaybillService],
+  providers: [TransactionService],
 })
 export class TransactionModule {}

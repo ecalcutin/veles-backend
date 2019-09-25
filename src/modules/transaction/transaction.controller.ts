@@ -12,17 +12,14 @@ import {
 import { Response } from 'express';
 import { DocumentService } from '../document';
 import { TransactionService } from './transaction.service';
-import { WaybillService } from './waybill.service';
 import { CreateWaybillDto } from './dto';
-import { Waybill } from './interfaces';
 
 @Controller('transactions')
 export class TransactionController {
   constructor(
     private readonly transactionService: TransactionService,
-    private readonly waybillService: WaybillService,
-    private readonly documentService: DocumentService,
-  ) {}
+    // private readonly documentService: DocumentService,
+  ) { }
 
   @Get('/')
   async calculateBalances(
@@ -39,103 +36,23 @@ export class TransactionController {
 
   @Post('/waybill')
   async createWaybill(@Body() waybill: CreateWaybillDto) {
-    switch (waybill.action.type) {
-      case 'buy':
-        await this.waybillService.createWaybill({
-          ...waybill,
-          stock: waybill.destination,
-          action: { ...waybill.action, change: 'income' },
-        });
-        await Promise.all([
-          ...waybill.products.map(item => {
-            this.transactionService.createTransaction({
-              _stock: waybill.destination,
-              _product: item.original,
-              change: Math.abs(item.quantity),
-            });
-          }),
-        ]);
-        break;
-      case 'move':
-        await this.waybillService.createWaybill({
-          ...waybill,
-          stock: waybill.source,
-          action: { ...waybill.action, change: 'outcome' },
-        });
-        await Promise.all([
-          ...waybill.products.map(item => {
-            this.transactionService.createTransaction({
-              _stock: waybill.source,
-              _product: item.original,
-              change: Math.abs(item.quantity) * -1,
-            });
-          }),
-        ]);
-        await this.waybillService.createWaybill({
-          ...waybill,
-          stock: waybill.destination,
-          action: { ...waybill.action, change: 'income' },
-        });
-        await Promise.all([
-          ...waybill.products.map(item => {
-            this.transactionService.createTransaction({
-              _stock: waybill.destination,
-              _product: item.original,
-              change: Math.abs(item.quantity),
-            });
-          }),
-        ]);
-        break;
-      case 'production':
-        break;
-      case 'sell':
-        await this.waybillService.createWaybill({
-          ...waybill,
-          stock: waybill.source,
-          action: { ...waybill.action, change: 'outcome' },
-        });
-        await Promise.all([
-          ...waybill.products.map(item => {
-            this.transactionService.createTransaction({
-              _stock: waybill.source,
-              _product: item.original,
-              change: Math.abs(item.quantity) * -1,
-            });
-          }),
-        ]);
-        break;
-      case 'utilization':
-        await this.waybillService.createWaybill({
-          ...waybill,
-          stock: waybill.source,
-          action: { ...waybill.action, change: 'outcome' },
-        });
-        await Promise.all([
-          ...waybill.products.map(item => {
-            this.transactionService.createTransaction({
-              _stock: waybill.source,
-              _product: item.original,
-              change: Math.abs(item.quantity) * -1,
-            });
-          }),
-        ]);
-        break;
-      default:
-        throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
-    }
+    console.log(waybill)
+    await this.transactionService.parseWaybill(waybill);
   }
 
   @Get('/waybill')
-  async findWaybills(): Promise<Waybill[]> {
-    return await this.waybillService.findWaybills();
+  async findWaybills(): Promise<void> {
+    return await this.transactionService.searchWaybills();
   }
 
   @Get('/waybill/document/:id')
   async getWaybillDocument(@Res() response: Response, @Param('id') id: string) {
-    let waybill = await this.waybillService.getWaybillData(id);
-    let stream = this.documentService.prepareWaybillDocument(
-      waybill.toObject(),
-    );
+    // let waybill = await this.waybillService.getWaybillData(id);
+    let stream = null;
+    // this.documentService.prepareWaybillDocument(
+    //   null
+    //   // waybill.toObject(),
+    // );
     response.set({
       'Content-Type':
         'application/vnd.openxmlformats-officedocument.wordprocessingml.document',

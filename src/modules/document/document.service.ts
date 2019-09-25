@@ -6,13 +6,12 @@ import { resolve } from 'path';
 import { Readable } from 'stream';
 import moment from 'moment';
 
-import { Waybill } from '../transaction/interfaces';
 
 @Injectable()
 export class DocumentService {
   constructor() {}
 
-  prepareWaybillDocument(data: Waybill): Readable {
+  prepareWaybillDocument(data: any): Readable {
     let content = readFileSync(
       resolve(process.cwd(), 'templates', 'waybillTemplate.docx'),
       'binary',
