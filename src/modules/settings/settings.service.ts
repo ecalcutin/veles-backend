@@ -9,6 +9,7 @@ import {
   CreateStockDto,
   CreateCategoryDto,
   UpdateProductDto,
+  UpdateCategoryDto,
 } from './dto';
 import { TransactionRef } from '../transaction/schemas/transaction.schema';
 import { Transaction } from '../transaction/interfaces/transaction.interface';
@@ -57,6 +58,12 @@ export class SettingsService {
 
   async getCategories(): Promise<Category[]> {
     return await this.categoryModel.find().exec();
+  }
+  async updateCategory(
+    id: string,
+    category: UpdateCategoryDto,
+  ): Promise<Category> {
+    return await this.categoryModel.findByIdAndUpdate(id, category).exec();
   }
   async createCategory(category: CreateCategoryDto): Promise<Category> {
     return await new this.categoryModel(category).save();

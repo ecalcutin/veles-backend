@@ -15,6 +15,7 @@ import {
   UpdateStockDto,
   CreateProductDto,
   UpdateProductDto,
+  UpdateCategoryDto,
 } from './dto';
 import { SettingsService } from './settings.service';
 
@@ -30,6 +31,14 @@ export class SettingsController {
   @Post('categories')
   async createCategory(@Body() category: CreateCategoryDto): Promise<Category> {
     return await this.settingsService.createCategory(category);
+  }
+
+  @Put('categories/:id')
+  async updateCategoryById(
+    @Body() category: UpdateCategoryDto,
+    @Param('id') id: string,
+  ): Promise<Category> {
+    return await this.settingsService.updateCategory(id, category);
   }
 
   @Delete('categories/:id')
@@ -56,7 +65,7 @@ export class SettingsController {
   }
 
   @Delete('stocks/:id')
-  async removeStockById(@Param('id') id: string): Promise<Category> {
+  async removeStockById(@Param('id') id: string): Promise<Stock> {
     return await this.settingsService.removeStock(id);
   }
 
