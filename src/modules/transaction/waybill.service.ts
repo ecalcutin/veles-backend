@@ -32,19 +32,37 @@ export class WaybillService {
       _destination: waybill.destination,
       products: waybill.products,
       date: waybill.date,
-      type: waybill.type
+      type: waybill.type,
     }).save();
   }
 
   async findWaybills(): Promise<Waybill[]> {
     return await this.waybillModel
       .find()
-      .populate(['_source', '_destination', {
+      .populate([
+        '_source',
+        '_destination',
+        {
+          path: 'products._id',
+          populate: {
+            path: '_category',
+          },
+        },
+      ])
+      .sort({ createdAt: 1 })
+      .exec();
+  }
+
+  async getWaybillData(id: string): Promise<Waybill> {
+    return await this.waybillModel.findById(id).populate([
+      '_source',
+      '_destination',
+      {
         path: 'products._id',
         populate: {
-          path: '_category'
-        }
-      }]).sort({ createdAt: 1 })
-      .exec();
+          path: '_category',
+        },
+      },
+    ]).exec();
   }
 }
