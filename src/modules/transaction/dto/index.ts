@@ -1,1 +1,1 @@
-export { CreateWaybill } from './CreateWaybillDto'; 
+export { CreateWaybillDto } from './CreateWaybillDto';

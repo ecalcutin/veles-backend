@@ -9,9 +9,6 @@ export const WaybillSchema = new Schema(
     action: {
       type: Object,
     },
-    type: {
-      type: String,
-    },
     _source: {
       type: Schema.Types.ObjectId,
       ref: StockRef,

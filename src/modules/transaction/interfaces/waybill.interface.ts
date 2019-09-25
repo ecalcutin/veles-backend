@@ -1,5 +1,7 @@
 import { Document } from 'mongoose';
 
+type TWaybillChange = 'income' | 'outcome';
+type TWaybill = 'production' | 'move' | 'sell' | 'utilization' | 'buy';
 interface Product {
   readonly original: {
     readonly _id: string;
@@ -17,8 +19,11 @@ interface Product {
   readonly quantity: number;
 }
 export interface Waybill extends Document {
-  readonly action: string;
-  readonly type: string;
+  readonly action: {
+    title: string;
+    type: TWaybill;
+    change: TWaybillChange;
+  };
   readonly _source: any;
   readonly _destination: any;
   readonly date: string;
