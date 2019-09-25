@@ -6,6 +6,7 @@ import moment from 'moment';
 
 import { TransactionRef } from './schemas';
 import { Transaction, TransactionOptions } from './interfaces';
+import { CreateWaybillDto } from './dto';
 
 @Injectable()
 export class TransactionService {
@@ -101,6 +102,117 @@ export class TransactionService {
       ])
       .exec();
     return aggregated;
+  }
+
+  async searchWaybills() {
+    let aggregated = await this.transactionModel.aggregate([
+      {
+        $project: {
+          _id: 0
+        }
+      },
+      {
+        $match: {
+          _stock: new ObjectID('5d7ab3f6e8ccc22b60275206')
+        }
+      },
+      {
+        $group: {
+          _id: {
+            date: '$date',
+            waybill_id: '$waybill_id'
+          },
+          items: {
+            $push: {
+              product: '$_product',
+              quantity: '$change',
+              price: '$price.value'
+            }
+          }
+        }
+      },
+    ]);
+    console.log(aggregated);
+    console.log(aggregated[0]);
+  }
+
+  async parseWaybill(waybill: CreateWaybillDto) {
+    switch (waybill.action.type) {
+      // Outcome
+      case 'sell':
+      case 'utilization':
+        await Promise.all([
+          ...waybill.products.map(item => {
+            this.createTransaction({
+              _stock: waybill.source,
+              _product: item._id,
+              date: waybill.date,
+              price: item.price,
+              change: -Math.abs(item.quantity),
+              type: waybill.action.type
+            })
+          })
+        ]);
+        break;
+      // Income
+      case 'buy':
+      case 'import':
+        await Promise.all([
+          ...waybill.products.map(item => {
+            this.createTransaction({
+              _stock: waybill.source,
+              _product: item._id,
+              date: waybill.date,
+              price: item.price,
+              change: Math.abs(item.quantity),
+              type: waybill.action.type
+            })
+          })
+        ])
+        break;
+      case 'move':
+        await Promise.all(
+          [
+            ...waybill.products.map(item => {
+              this.createTransaction({
+                _stock: waybill.source,
+                _product: item._id,
+                date: waybill.date,
+                price: item.price,
+                change: -Math.abs(item.quantity),
+                type: waybill.action.type
+              })
+            }),
+            ...waybill.products.map(item => {
+              this.createTransaction({
+                _stock: waybill.destination,
+                _product: item._id,
+                date: waybill.date,
+                price: item.price,
+                change: Math.abs(item.quantity),
+                type: waybill.action.type
+              })
+            })
+          ])
+        break;
+      case 'production':
+        await Promise.all([
+          ...waybill.products.map(item => {
+            this.createTransaction({
+              _stock: waybill.source,
+              _product: item._id,
+              date: waybill.date,
+              price: item.price,
+              change: Math.abs(item.quantity),
+              type: waybill.action.type
+            })
+          })
+        ])
+        // decrease items
+        break;
+      default:
+        break;
+    }
   }
 
   async createTransaction(transaction: TransactionOptions): Promise<void> {
