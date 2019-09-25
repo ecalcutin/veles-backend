@@ -26,10 +26,10 @@ export class DocumentService {
       source: data._source ? data._source.title : '',
       products: data.products.map((item, index) => ({
         index: index + 1,
-        title: item._id.title,
-        category: item._id._category.title,
-        unit: item._id._category.unit,
-        price_retail: item._id.price_retail,
+        title: item.title,
+        category: item.category,
+        unit: item.unit,
+        price_retail: item.price_retail,
         quantity: item.quantity
       }))
     });
