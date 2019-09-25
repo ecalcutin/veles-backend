@@ -41,7 +41,7 @@ export class TransactionController {
   }
 
   @Get('/waybill')
-  async findWaybills(): Promise<void> {
+  async findWaybills(): Promise<any> {
     return await this.transactionService.searchWaybills();
   }
 
