@@ -7,16 +7,27 @@ import { Stock } from '../settings/interfaces';
 
 import { WaybillRef } from './schemas';
 import { Waybill } from './interfaces';
-import { CreateWaybillDto } from './dto';
+
+type WaybillData = {
+  source?: string;
+  destination?: string;
+  stock: string;
+  action: {
+    type: string;
+    change: string;
+  };
+  date: string;
+  products: Array<any>;
+}
 
 @Injectable()
 export class WaybillService {
   constructor(
     @InjectModel(WaybillRef) private readonly waybillModel: Model<Waybill>,
     @InjectModel(StockRef) private readonly stockModel: Model<Stock>,
-  ) {}
+  ) { }
 
-  async createWaybill(waybill): Promise<Waybill> {
+  async createWaybill(waybill: WaybillData): Promise<Waybill> {
     if (!waybill.source) delete waybill.source;
     if (!waybill.destination) delete waybill.destination;
     let destStock = await this.stockModel
