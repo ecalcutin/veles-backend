@@ -117,6 +117,28 @@ export class TransactionService {
         }
       },
       {
+        $lookup: {
+          from: 'products',
+          localField: '_product',
+          foreignField: '_id',
+          as: 'product',
+        },
+      },
+      {
+        $unwind: '$product',
+      },
+      {
+        $lookup: {
+          from: 'categories',
+          localField: 'product._category',
+          foreignField: '_id',
+          as: 'category',
+        },
+      },
+      {
+        $unwind: '$category',
+      },
+      {
         $group: {
           _id: {
             date: '$date',
@@ -124,16 +146,18 @@ export class TransactionService {
           },
           items: {
             $push: {
-              product: '$_product',
+              product: '$product',
+              category: '$category',
               quantity: '$change',
               price: '$price.value'
             }
           }
-        }
+        },
       },
     ]);
     console.log(aggregated);
     console.log(aggregated[0]);
+    return aggregated;
   }
 
   async parseWaybill(waybill: CreateWaybillDto) {
