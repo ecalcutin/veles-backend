@@ -7,10 +7,10 @@ export const WaybillRef = 'Waybill';
 export const WaybillSchema = new Schema(
   {
     action: {
-      type: Object
+      type: Object,
     },
     type: {
-      type: String
+      type: String,
     },
     _source: {
       type: Schema.Types.ObjectId,
@@ -26,11 +26,16 @@ export const WaybillSchema = new Schema(
     },
     products: [
       {
-        _id: {
+        original: {
           type: Schema.Types.ObjectId,
           ref: ProductRef,
           required: true,
         },
+        title: String,
+        category: String,
+        unit: String,
+        price_wholesale: Number,
+        price_retail: Number,
         quantity: Number,
       },
     ],

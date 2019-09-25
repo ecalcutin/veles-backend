@@ -47,7 +47,7 @@ export class TransactionController {
           ...waybill.products.map(item => {
             this.transactionService.createTransaction({
               _stock: waybill.destination,
-              _product: item._id,
+              _product: item.original,
               change: Math.abs(item.quantity),
             });
           }),
@@ -62,7 +62,7 @@ export class TransactionController {
           ...waybill.products.map(item => {
             this.transactionService.createTransaction({
               _stock: waybill.source,
-              _product: item._id,
+              _product: item.original,
               change: Math.abs(item.quantity) * -1,
             });
           }),
@@ -72,7 +72,7 @@ export class TransactionController {
           ...waybill.products.map(item => {
             this.transactionService.createTransaction({
               _stock: waybill.destination,
-              _product: item._id,
+              _product: item.original,
               change: Math.abs(item.quantity),
             });
           }),
@@ -89,7 +89,7 @@ export class TransactionController {
           ...waybill.products.map(item => {
             this.transactionService.createTransaction({
               _stock: waybill.source,
-              _product: item._id,
+              _product: item.original,
               change: Math.abs(item.quantity) * -1,
             });
           }),
@@ -104,7 +104,7 @@ export class TransactionController {
           ...waybill.products.map(item => {
             this.transactionService.createTransaction({
               _stock: waybill.source,
-              _product: item._id,
+              _product: item.original,
               change: Math.abs(item.quantity) * -1,
             });
           }),
