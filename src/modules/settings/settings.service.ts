@@ -10,6 +10,7 @@ import {
   CreateCategoryDto,
   UpdateProductDto,
   UpdateCategoryDto,
+  UpdateStockDto,
 } from './dto';
 import { TransactionRef } from '../transaction/schemas/transaction.schema';
 import { Transaction } from '../transaction/interfaces/transaction.interface';
@@ -51,6 +52,10 @@ export class SettingsService {
     return await new this.stockModel(stock).save();
   }
 
+  async updateStock(id: string, stock: UpdateStockDto): Promise<Stock> {
+    return await this.stockModel.findByIdAndUpdate(id, stock).exec();
+  }
+
   async removeStock(id: string): Promise<Stock> {
     await this.productModel.remove({ _stock: id }).exec();
     return await this.stockModel.findByIdAndRemove(id).exec();
@@ -65,6 +70,7 @@ export class SettingsService {
   ): Promise<Category> {
     return await this.categoryModel.findByIdAndUpdate(id, category).exec();
   }
+
   async createCategory(category: CreateCategoryDto): Promise<Category> {
     return await new this.categoryModel(category).save();
   }

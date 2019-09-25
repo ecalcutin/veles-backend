@@ -61,7 +61,7 @@ export class SettingsController {
     @Body() stock: UpdateStockDto,
     @Param('id') id: string,
   ): Promise<Stock> {
-    return await this.settingsService.createStock(stock);
+    return await this.settingsService.updateStock(id, stock);
   }
 
   @Delete('stocks/:id')
