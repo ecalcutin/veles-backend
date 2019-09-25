@@ -9,6 +9,7 @@ export const StockSchema = new Schema(
     },
     waybillPrefix: {
       type: String,
+      unique: true,
       required: true,
     },
     waybillNumber: {
