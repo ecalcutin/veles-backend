@@ -37,8 +37,6 @@ export class WaybillService {
 
     return await new this.waybillModel({
       action: waybill.action,
-      _source: waybill.source,
-      _destination: waybill.destination,
       _stock: waybill.stock,
       number: destNumber.toString(),
       products: waybill.products,
@@ -51,8 +49,7 @@ export class WaybillService {
     return await this.waybillModel
       .find()
       .populate([
-        '_source',
-        '_destination',
+        '_stock',
         {
           path: 'products.original',
         },
