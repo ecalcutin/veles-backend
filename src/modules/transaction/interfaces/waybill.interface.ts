@@ -26,6 +26,7 @@ export interface Waybill extends Document {
   };
   readonly _source: any;
   readonly _destination: any;
+  readonly _stock: any;
   readonly date: string;
 
   readonly products: Product[];

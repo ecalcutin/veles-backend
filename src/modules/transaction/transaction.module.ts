@@ -5,7 +5,12 @@ import { WaybillService } from './waybill.service';
 import { TransactionService } from './transaction.service';
 import { TransactionController } from './transaction.controller';
 
-import { ProductRef, ProductSchema } from '../settings/schemas';
+import {
+  ProductRef,
+  ProductSchema,
+  StockRef,
+  StockSchema,
+} from '../settings/schemas';
 import {
   TransactionRef,
   TransactionSchema,
@@ -21,6 +26,7 @@ import { DocumentModule } from '../document';
       { name: ProductRef, schema: ProductSchema },
       { name: TransactionRef, schema: TransactionSchema },
       { name: WaybillRef, schema: WaybillSchema },
+      { name: StockRef, schema: StockSchema },
     ]),
   ],
   controllers: [TransactionController],

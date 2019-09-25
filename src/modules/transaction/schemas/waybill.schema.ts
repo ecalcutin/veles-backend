@@ -9,6 +9,11 @@ export const WaybillSchema = new Schema(
     action: {
       type: Object,
     },
+    _stock: {
+      type: Schema.Types.ObjectId,
+      ref: StockRef,
+      required: true,
+    },
     _source: {
       type: Schema.Types.ObjectId,
       ref: StockRef,
@@ -20,6 +25,9 @@ export const WaybillSchema = new Schema(
     date: {
       type: String,
       default: () => moment().format('YYYY-MM-DD'),
+    },
+    number: {
+      type: String,
     },
     products: [
       {

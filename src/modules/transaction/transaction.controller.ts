@@ -43,6 +43,7 @@ export class TransactionController {
       case 'buy':
         await this.waybillService.createWaybill({
           ...waybill,
+          stock: waybill.destination,
           action: { ...waybill.action, change: 'income' },
         });
         await Promise.all([
@@ -58,6 +59,7 @@ export class TransactionController {
       case 'move':
         await this.waybillService.createWaybill({
           ...waybill,
+          stock: waybill.source,
           action: { ...waybill.action, change: 'outcome' },
         });
         await Promise.all([
@@ -71,6 +73,7 @@ export class TransactionController {
         ]);
         await this.waybillService.createWaybill({
           ...waybill,
+          stock: waybill.destination,
           action: { ...waybill.action, change: 'income' },
         });
         await Promise.all([
@@ -88,6 +91,7 @@ export class TransactionController {
       case 'sell':
         await this.waybillService.createWaybill({
           ...waybill,
+          stock: waybill.source,
           action: { ...waybill.action, change: 'outcome' },
         });
         await Promise.all([
@@ -103,6 +107,7 @@ export class TransactionController {
       case 'utilization':
         await this.waybillService.createWaybill({
           ...waybill,
+          stock: waybill.source,
           action: { ...waybill.action, change: 'outcome' },
         });
         await Promise.all([
