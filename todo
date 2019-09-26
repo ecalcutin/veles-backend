@@ -1,14 +1,5 @@
-remove all collection on TEST init
-
-interfaces for waybill, 
-
-
 chain delete -> deleting all all shit (category/stock -> transactions -> waybills)
 
 SYNC SERVER TIME
 
-auto update waybill id
-
 Production waybill -> to remove raw materials * quantity as outcome (production)
-
-simplify parse transaction
