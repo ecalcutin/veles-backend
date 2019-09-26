@@ -1,5 +1,7 @@
 import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 import { LoggerMiddleware } from './middlewares/logger';
 import { ConfigModule, ConfigService } from './config';
@@ -23,6 +25,9 @@ import { DocumentModule } from './modules/document';
     }),
     SettingsModule,
     TransactionModule,
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'client'),
+    }),
   ],
   controllers: [],
   providers: [],
