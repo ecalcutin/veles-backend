@@ -6,7 +6,6 @@ export class CreateStockDto {
   @MaxLength(20)
   readonly title: string;
   readonly waybillPrefix: string;
-  readonly waybillNumber: number;
 }
 
 export class UpdateStockDto {

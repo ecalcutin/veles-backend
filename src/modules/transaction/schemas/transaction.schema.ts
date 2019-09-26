@@ -18,19 +18,28 @@ export const TransactionSchema = new Schema(
     },
     date: {
       type: String,
-      required: true
+      required: true,
+    },
+    waybillType: {
+      type: String,
+      required: true,
+    },
+    waybillSubType: {
+      type: String,
+      required: true,
     },
     waybill_id: {
-      type: String
+      type: String,
+      required: true,
     },
     price: {
       type: {
         type: String,
-        required: true
+        required: true,
       },
       value: {
         type: Number,
-        required: true
+        required: true,
       },
     },
     change: {

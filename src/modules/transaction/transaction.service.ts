@@ -18,6 +18,15 @@ export class TransactionService {
     @InjectModel(StockRef) private readonly stockModel: Model<Stock>,
   ) {}
 
+  async prepareWaybillId(stock_id: string): Promise<string | null> {
+    let stock = await this.stockModel.findById(stock_id).exec();
+    if (stock) {
+      return `${stock.waybillPrefix}-${stock.waybillNumber + 1}`;
+    } else {
+      return null;
+    }
+  }
+
   async calculateBalances(
     stock_id: string,
     start: string | Date,
@@ -107,7 +116,7 @@ export class TransactionService {
     return aggregated;
   }
 
-  async searchWaybills() {
+  async searchWaybills(options?: any) {
     let aggregated = await this.transactionModel.aggregate([
       {
         $project: {
@@ -115,9 +124,15 @@ export class TransactionService {
         },
       },
       {
-        $match: {
-          _stock: new ObjectID('5d7ab3f6e8ccc22b60275206'),
+        $lookup: {
+          from: 'stocks',
+          localField: '_stock',
+          foreignField: '_id',
+          as: 'stock',
         },
+      },
+      {
+        $unwind: '$stock',
       },
       {
         $lookup: {
@@ -146,6 +161,9 @@ export class TransactionService {
           _id: {
             date: '$date',
             waybill_id: '$waybill_id',
+            waybillType: '$waybillType',
+            waybillSubType: '$waybillSubType',
+            stock: '$stock',
           },
           items: {
             $push: {
@@ -169,12 +187,15 @@ export class TransactionService {
       case 'sell':
       case 'utilization':
         await Promise.all([
-          ...waybill.products.map(item => {
+          ...waybill.products.map(async item => {
             this.createTransaction({
               _stock: waybill.source,
               _product: item._id,
               date: waybill.date,
               price: item.price,
+              waybill_id: await this.prepareWaybillId(waybill.source),
+              waybillType: 'outcome',
+              waybillSubType: waybill.action.title,
               change: -Math.abs(item.quantity),
               type: waybill.action.type,
             });
@@ -185,11 +206,14 @@ export class TransactionService {
       case 'buy':
       case 'import':
         await Promise.all([
-          ...waybill.products.map(item => {
+          ...waybill.products.map(async item => {
             this.createTransaction({
-              _stock: waybill.source,
+              _stock: waybill.destination,
               _product: item._id,
               date: waybill.date,
+              waybill_id: await this.prepareWaybillId(waybill.destination),
+              waybillType: 'income',
+              waybillSubType: waybill.action.title,
               price: item.price,
               change: Math.abs(item.quantity),
               type: waybill.action.type,
@@ -199,21 +223,27 @@ export class TransactionService {
         break;
       case 'move':
         await Promise.all([
-          ...waybill.products.map(item => {
+          ...waybill.products.map(async item => {
             this.createTransaction({
               _stock: waybill.source,
               _product: item._id,
               date: waybill.date,
+              waybill_id: await this.prepareWaybillId(waybill.source),
+              waybillType: 'outcome',
+              waybillSubType: waybill.action.title,
               price: item.price,
               change: -Math.abs(item.quantity),
               type: waybill.action.type,
             });
           }),
-          ...waybill.products.map(item => {
+          ...waybill.products.map(async item => {
             this.createTransaction({
               _stock: waybill.destination,
               _product: item._id,
               date: waybill.date,
+              waybill_id: await this.prepareWaybillId(waybill.destination),
+              waybillType: 'income',
+              waybillSubType: waybill.action.title,
               price: item.price,
               change: Math.abs(item.quantity),
               type: waybill.action.type,
@@ -223,12 +253,15 @@ export class TransactionService {
         break;
       case 'production':
         await Promise.all([
-          ...waybill.products.map(item => {
+          ...waybill.products.map(async item => {
             this.createTransaction({
-              _stock: waybill.source,
+              _stock: waybill.destination,
               _product: item._id,
               date: waybill.date,
               price: item.price,
+              waybill_id: await this.prepareWaybillId(waybill.source),
+              waybillType: 'income',
+              waybillSubType: waybill.action.title,
               change: Math.abs(item.quantity),
               type: waybill.action.type,
             });

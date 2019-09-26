@@ -6,10 +6,13 @@ export interface TransactionOptions {
   change: number;
   price: {
     value: number;
-    type: 'retail' | 'wholesale'
+    type: 'retail' | 'wholesale';
   };
+  waybill_id: string;
+  waybillType: 'income' | 'outcome';
+  waybillSubType: string;
   date: string;
   type: string;
 }
 
-export interface Transaction extends TransactionOptions, Document { }
+export interface Transaction extends TransactionOptions, Document {}
