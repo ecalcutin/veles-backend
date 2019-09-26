@@ -7,13 +7,16 @@ import moment from 'moment';
 import { TransactionRef } from './schemas';
 import { Transaction, TransactionOptions } from './interfaces';
 import { CreateWaybillDto } from './dto';
+import { StockRef } from '../settings/schemas';
+import { Stock } from '../settings/interfaces';
 
 @Injectable()
 export class TransactionService {
   constructor(
     @InjectModel(TransactionRef)
     private readonly transactionModel: Model<Transaction>,
-  ) { }
+    @InjectModel(StockRef) private readonly stockModel: Model<Stock>,
+  ) {}
 
   async calculateBalances(
     stock_id: string,
@@ -108,13 +111,13 @@ export class TransactionService {
     let aggregated = await this.transactionModel.aggregate([
       {
         $project: {
-          _id: 0
-        }
+          _id: 0,
+        },
       },
       {
         $match: {
-          _stock: new ObjectID('5d7ab3f6e8ccc22b60275206')
-        }
+          _stock: new ObjectID('5d7ab3f6e8ccc22b60275206'),
+        },
       },
       {
         $lookup: {
@@ -142,16 +145,16 @@ export class TransactionService {
         $group: {
           _id: {
             date: '$date',
-            waybill_id: '$waybill_id'
+            waybill_id: '$waybill_id',
           },
           items: {
             $push: {
               product: '$product',
               category: '$category',
               quantity: '$change',
-              price: '$price.value'
-            }
-          }
+              price: '$price.value',
+            },
+          },
         },
       },
     ]);
@@ -173,9 +176,9 @@ export class TransactionService {
               date: waybill.date,
               price: item.price,
               change: -Math.abs(item.quantity),
-              type: waybill.action.type
-            })
-          })
+              type: waybill.action.type,
+            });
+          }),
         ]);
         break;
       // Income
@@ -189,35 +192,34 @@ export class TransactionService {
               date: waybill.date,
               price: item.price,
               change: Math.abs(item.quantity),
-              type: waybill.action.type
-            })
-          })
-        ])
+              type: waybill.action.type,
+            });
+          }),
+        ]);
         break;
       case 'move':
-        await Promise.all(
-          [
-            ...waybill.products.map(item => {
-              this.createTransaction({
-                _stock: waybill.source,
-                _product: item._id,
-                date: waybill.date,
-                price: item.price,
-                change: -Math.abs(item.quantity),
-                type: waybill.action.type
-              })
-            }),
-            ...waybill.products.map(item => {
-              this.createTransaction({
-                _stock: waybill.destination,
-                _product: item._id,
-                date: waybill.date,
-                price: item.price,
-                change: Math.abs(item.quantity),
-                type: waybill.action.type
-              })
-            })
-          ])
+        await Promise.all([
+          ...waybill.products.map(item => {
+            this.createTransaction({
+              _stock: waybill.source,
+              _product: item._id,
+              date: waybill.date,
+              price: item.price,
+              change: -Math.abs(item.quantity),
+              type: waybill.action.type,
+            });
+          }),
+          ...waybill.products.map(item => {
+            this.createTransaction({
+              _stock: waybill.destination,
+              _product: item._id,
+              date: waybill.date,
+              price: item.price,
+              change: Math.abs(item.quantity),
+              type: waybill.action.type,
+            });
+          }),
+        ]);
         break;
       case 'production':
         await Promise.all([
@@ -228,10 +230,10 @@ export class TransactionService {
               date: waybill.date,
               price: item.price,
               change: Math.abs(item.quantity),
-              type: waybill.action.type
-            })
-          })
-        ])
+              type: waybill.action.type,
+            });
+          }),
+        ]);
         // decrease items
         break;
       default:
