@@ -19,7 +19,9 @@ export class TransactionService {
   ) {}
 
   async prepareWaybillId(stock_id: string): Promise<string | null> {
-    let stock = await this.stockModel.findById(stock_id).exec();
+    let stock = await this.stockModel
+      .findByIdAndUpdate(stock_id, { $inc: { waybillNumber: 1 } })
+      .exec();
     if (stock) {
       return `${stock.waybillPrefix}-${stock.waybillNumber + 1}`;
     } else {
@@ -186,87 +188,102 @@ export class TransactionService {
       // Outcome
       case 'sell':
       case 'utilization':
-        await Promise.all([
-          ...waybill.products.map(async item => {
-            this.createTransaction({
-              _stock: waybill.source,
-              _product: item._id,
-              date: waybill.date,
-              price: item.price,
-              waybill_id: await this.prepareWaybillId(waybill.source),
-              waybillType: 'outcome',
-              waybillSubType: waybill.action.title,
-              change: -Math.abs(item.quantity),
-              type: waybill.action.type,
-            });
-          }),
-        ]);
+        {
+          let waybillID = await this.prepareWaybillId(waybill.source);
+          await Promise.all([
+            ...waybill.products.map(item => {
+              this.createTransaction({
+                _stock: waybill.source,
+                _product: item._id,
+                date: waybill.date,
+                price: item.price,
+                waybill_id: waybillID,
+                waybillType: 'outcome',
+                waybillSubType: waybill.action.title,
+                change: -Math.abs(item.quantity),
+                type: waybill.action.type,
+              });
+            }),
+          ]);
+        }
         break;
       // Income
       case 'buy':
       case 'import':
-        await Promise.all([
-          ...waybill.products.map(async item => {
-            this.createTransaction({
-              _stock: waybill.destination,
-              _product: item._id,
-              date: waybill.date,
-              waybill_id: await this.prepareWaybillId(waybill.destination),
-              waybillType: 'income',
-              waybillSubType: waybill.action.title,
-              price: item.price,
-              change: Math.abs(item.quantity),
-              type: waybill.action.type,
-            });
-          }),
-        ]);
+        {
+          let waybillID = await this.prepareWaybillId(waybill.destination);
+          await Promise.all([
+            ...waybill.products.map(item => {
+              this.createTransaction({
+                _stock: waybill.destination,
+                _product: item._id,
+                date: waybill.date,
+                waybill_id: waybillID,
+                waybillType: 'income',
+                waybillSubType: waybill.action.title,
+                price: item.price,
+                change: Math.abs(item.quantity),
+                type: waybill.action.type,
+              });
+            }),
+          ]);
+        }
         break;
       case 'move':
-        await Promise.all([
-          ...waybill.products.map(async item => {
-            this.createTransaction({
-              _stock: waybill.source,
-              _product: item._id,
-              date: waybill.date,
-              waybill_id: await this.prepareWaybillId(waybill.source),
-              waybillType: 'outcome',
-              waybillSubType: waybill.action.title,
-              price: item.price,
-              change: -Math.abs(item.quantity),
-              type: waybill.action.type,
-            });
-          }),
-          ...waybill.products.map(async item => {
-            this.createTransaction({
-              _stock: waybill.destination,
-              _product: item._id,
-              date: waybill.date,
-              waybill_id: await this.prepareWaybillId(waybill.destination),
-              waybillType: 'income',
-              waybillSubType: waybill.action.title,
-              price: item.price,
-              change: Math.abs(item.quantity),
-              type: waybill.action.type,
-            });
-          }),
-        ]);
+        {
+          let sourceWaybillID = await this.prepareWaybillId(waybill.source);
+          let destinationWaybillID = await this.prepareWaybillId(
+            waybill.destination,
+          );
+          await Promise.all([
+            ...waybill.products.map(item => {
+              this.createTransaction({
+                _stock: waybill.source,
+                _product: item._id,
+                date: waybill.date,
+                waybill_id: sourceWaybillID,
+                waybillType: 'outcome',
+                waybillSubType: waybill.action.title,
+                price: item.price,
+                change: -Math.abs(item.quantity),
+                type: waybill.action.type,
+              });
+            }),
+            ...waybill.products.map(item => {
+              this.createTransaction({
+                _stock: waybill.destination,
+                _product: item._id,
+                date: waybill.date,
+                waybill_id: destinationWaybillID,
+                waybillType: 'income',
+                waybillSubType: waybill.action.title,
+                price: item.price,
+                change: Math.abs(item.quantity),
+                type: waybill.action.type,
+              });
+            }),
+          ]);
+        }
         break;
       case 'production':
-        await Promise.all([
-          ...waybill.products.map(async item => {
-            this.createTransaction({
-              _stock: waybill.destination,
-              _product: item._id,
-              date: waybill.date,
-              price: item.price,
-              waybill_id: await this.prepareWaybillId(waybill.source),
-              waybillType: 'income',
-              waybillSubType: waybill.action.title,
-              change: Math.abs(item.quantity),
-              type: waybill.action.type,
-            });
-          }),
-        ]);
+        {
+          let waybillID = await this.prepareWaybillId(waybill.destination);
+          await Promise.all([
+            ...waybill.products.map(item => {
+              this.createTransaction({
+                _stock: waybill.destination,
+                _product: item._id,
+                date: waybill.date,
+                price: item.price,
+                waybill_id: waybillID,
+                waybillType: 'income',
+                waybillSubType: waybill.action.title,
+                change: Math.abs(item.quantity),
+                type: waybill.action.type,
+              });
+            }),
+          ]);
+        }
         // decrease items
         break;
       default:
