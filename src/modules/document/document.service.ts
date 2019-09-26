@@ -1,11 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import PizZip from 'pizzip';
 import DocxTemplater from 'docxtemplater';
-import { readFileSync, writeFileSync } from 'fs';
+import { readFileSync } from 'fs';
 import { resolve } from 'path';
 import { Readable } from 'stream';
 import moment from 'moment';
-
 
 @Injectable()
 export class DocumentService {
@@ -23,16 +22,16 @@ export class DocumentService {
       date: moment(data.date)
         .locale('ru')
         .format('от «DD» MMMM YYYY г.'),
-      destination: data._destination ? data._destination.title : '',
-      source: data._source ? data._source.title : '',
-      products: data.products.map((item, index) => ({
+      waybill_id: data._id.waybill_id,
+      destination: data._id.stock.title,
+      products: data.items.map((item, index) => ({
         index: index + 1,
-        title: item.title,
-        category: item.category,
-        unit: item.unit,
-        price_retail: item.price_retail,
-        quantity: item.quantity,
-        retailSumm: item.price_retail * item.quantity,
+        title: item.product.title,
+        category: item.category.title,
+        unit: item.category.unit,
+        price: item.price,
+        quantity: Math.abs(item.quantity),
+        summ: Math.abs(item.price * item.quantity),
       })),
     });
 
