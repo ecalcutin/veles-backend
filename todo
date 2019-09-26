@@ -7,4 +7,8 @@ chain delete -> deleting all all shit (category/stock -> transactions -> waybill
 
 SYNC SERVER TIME
 
+auto update waybill id
+
 Production waybill -> to remove raw materials * quantity as outcome (production)
+
+simplify parse transaction

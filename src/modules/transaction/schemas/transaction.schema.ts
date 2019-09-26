@@ -16,6 +16,32 @@ export const TransactionSchema = new Schema(
       ref: StockRef,
       required: true,
     },
+    date: {
+      type: String,
+      required: true,
+    },
+    waybillType: {
+      type: String,
+      required: true,
+    },
+    waybillSubType: {
+      type: String,
+      required: true,
+    },
+    waybill_id: {
+      type: String,
+      required: true,
+    },
+    price: {
+      type: {
+        type: String,
+        required: true,
+      },
+      value: {
+        type: Number,
+        required: true,
+      },
+    },
     change: {
       type: Number,
       validate: {
