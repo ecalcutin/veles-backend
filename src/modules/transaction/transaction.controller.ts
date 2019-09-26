@@ -1,14 +1,4 @@
-import {
-  Controller,
-  Get,
-  Query,
-  Post,
-  Body,
-  HttpException,
-  HttpStatus,
-  Res,
-  Param,
-} from '@nestjs/common';
+import { Controller, Get, Query, Post, Body, Res } from '@nestjs/common';
 import { Response } from 'express';
 import { DocumentService } from '../document';
 import { TransactionService } from './transaction.service';
@@ -18,8 +8,8 @@ import { CreateWaybillDto } from './dto';
 export class TransactionController {
   constructor(
     private readonly transactionService: TransactionService,
-    // private readonly documentService: DocumentService,
-  ) { }
+    private readonly documentService: DocumentService,
+  ) {}
 
   @Get('/')
   async calculateBalances(
@@ -36,7 +26,6 @@ export class TransactionController {
 
   @Post('/waybill')
   async createWaybill(@Body() waybill: CreateWaybillDto) {
-    console.log(waybill)
     await this.transactionService.parseWaybill(waybill);
   }
 
@@ -45,14 +34,9 @@ export class TransactionController {
     return await this.transactionService.searchWaybills();
   }
 
-  @Get('/waybill/document/:id')
-  async getWaybillDocument(@Res() response: Response, @Param('id') id: string) {
-    // let waybill = await this.waybillService.getWaybillData(id);
-    let stream = null;
-    // this.documentService.prepareWaybillDocument(
-    //   null
-    //   // waybill.toObject(),
-    // );
+  @Post('/waybill/document')
+  async getWaybillDocument(@Res() response: Response, @Body() waybill) {
+    let stream = this.documentService.prepareWaybillDocument(waybill);
     response.set({
       'Content-Type':
         'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
