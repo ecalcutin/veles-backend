@@ -17,9 +17,9 @@ import {
 } from './dto';
 import { SettingsService } from './settings.service';
 
-import { CategoryService } from '../categories';
-import { CreateCategoryDto, UpdateCategoryDto } from '../categories/dto';
-import { CategoryModel } from '../categories/interfaces';
+import { CategoryService } from '../category';
+import { CreateCategoryDto, UpdateCategoryDto } from '../category/dto';
+import { CategoryModel } from '../category/interfaces';
 
 @Controller('settings')
 export class SettingsController {
