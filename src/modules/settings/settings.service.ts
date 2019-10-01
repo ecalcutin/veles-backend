@@ -60,21 +60,4 @@ export class SettingsService {
     await this.productModel.remove({ _stock: id }).exec();
     return await this.stockModel.findByIdAndRemove(id).exec();
   }
-
-  async getCategories(): Promise<Category[]> {
-    return await this.categoryModel.find().exec();
-  }
-  async updateCategory(
-    id: string,
-    category: UpdateCategoryDto,
-  ): Promise<Category> {
-    return await this.categoryModel.findByIdAndUpdate(id, category).exec();
-  }
-
-  async createCategory(category: CreateCategoryDto): Promise<Category> {
-    return await new this.categoryModel(category).save();
-  }
-  async removeCategory(id: string): Promise<Category> {
-    return await this.categoryModel.findByIdAndRemove(id).exec();
-  }
 }
