@@ -12,7 +12,11 @@ export const StockSchema = new Schema(
       unique: true,
       required: true,
     },
-    waybillNumber: {
+    incomeWaybillCount: {
+      type: Number,
+      default: 0,
+    },
+    outcomeWaybillCount: {
       type: Number,
       default: 0,
     },
