@@ -9,7 +9,7 @@ import {
 
 import { SettingsController } from './settings.controller';
 import { SettingsService } from './settings.service';
-import { CategoryModule } from '../categories';
+import { CategoryModule } from '../category';
 
 @Module({
   imports: [
