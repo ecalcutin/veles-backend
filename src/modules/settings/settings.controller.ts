@@ -8,24 +8,24 @@ import {
   Body,
 } from '@nestjs/common';
 
-import { Stock, Product } from './interfaces';
-import {
-  CreateStockDto,
-  UpdateStockDto,
-  CreateProductDto,
-  UpdateProductDto,
-} from './dto';
+import { Stock } from './interfaces';
+import { CreateStockDto, UpdateStockDto } from './dto';
 import { SettingsService } from './settings.service';
 
 import { CategoryService } from '../category';
 import { CreateCategoryDto, UpdateCategoryDto } from '../category/dto';
 import { CategoryModel } from '../category/interfaces';
 
+import { ProductService } from '../product';
+import { CreateProductDto, UpdateProductDto } from '../product/dto';
+import { ProductModel } from '../product/interfaces';
+
 @Controller('settings')
 export class SettingsController {
   constructor(
     private readonly settingsService: SettingsService,
     private readonly categoryService: CategoryService,
+    private readonly productService: ProductService,
   ) {}
 
   @Get('categories')
@@ -78,24 +78,26 @@ export class SettingsController {
 
   @Get('products')
   async getProducts() {
-    return await this.settingsService.getProducts();
+    return await this.productService.find();
   }
 
   @Post('products')
-  async createProduct(@Body() product: CreateProductDto): Promise<Product> {
-    return await this.settingsService.createProduct(product);
+  async createProduct(
+    @Body() product: CreateProductDto,
+  ): Promise<ProductModel> {
+    return await this.productService.create(product);
   }
 
   @Put('products/:id')
   async updateProductById(
     @Body() product: UpdateProductDto,
     @Param('id') id: string,
-  ): Promise<Product> {
-    return await this.settingsService.updateProduct(id, product);
+  ): Promise<ProductModel> {
+    return await this.productService.update(id, product);
   }
 
   @Delete('products/:id')
-  async removeProductById(@Param('id') id: string): Promise<Product> {
-    return await this.settingsService.removeProduct(id);
+  async removeProductById(@Param('id') id: string): Promise<ProductModel> {
+    return await this.productService.remove(id);
   }
 }
