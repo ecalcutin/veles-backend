@@ -11,8 +11,12 @@ export class StockService {
     @InjectModel(StockRef) private readonly stockModel: Model<StockModel>,
   ) {}
 
-  async find(): Promise<Stock[]> {
+  async find(): Promise<StockModel[]> {
     return await this.stockModel.find().exec();
+  }
+
+  async get(id: string): Promise<StockModel> {
+    return await this.stockModel.findById(id);
   }
 
   async create(stock: Stock): Promise<StockModel> {
