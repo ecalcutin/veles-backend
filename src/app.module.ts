@@ -10,12 +10,20 @@ import { SettingsModule } from './modules/settings';
 import { TransactionModule } from './modules/transaction';
 import { CronModule } from './cron';
 import { DocumentModule } from './modules/document';
+import { StockModule } from './modules/stock/stock.module';
+import { CategoryModule } from './modules/category';
+import { ProductModule } from './modules/product';
 
 @Module({
   imports: [
     ConfigModule,
     CronModule,
     DocumentModule,
+    StockModule,
+    CategoryModule,
+    ProductModule,
+    TransactionModule,
+    SettingsModule,
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
@@ -23,8 +31,6 @@ import { DocumentModule } from './modules/document';
       }),
       inject: [ConfigService],
     }),
-    SettingsModule,
-    TransactionModule,
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'client'),
     }),

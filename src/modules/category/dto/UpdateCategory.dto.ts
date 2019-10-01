@@ -1,18 +1,8 @@
 import { MinLength, MaxLength, IsString } from 'class-validator';
 
-export class CreateCategoryDto {
-  @IsString()
-  @MinLength(4)
-  @MaxLength(20)
-  readonly title: string;
+import { Category } from '../interfaces';
 
-  @IsString()
-  @MinLength(2)
-  @MaxLength(5)
-  readonly unit: string;
-}
-
-export class UpdateCategoryDto {
+export class UpdateCategoryDto implements Category {
   @IsString()
   @MinLength(4)
   @MaxLength(20)

@@ -1,6 +1,6 @@
 import { Schema } from 'mongoose';
 
-import { CategoryRef } from './category.schema';
+import { CategoryRef } from '../../category/schemas';
 
 export const ProductRef = 'Product';
 export const ProductSchema = new Schema(

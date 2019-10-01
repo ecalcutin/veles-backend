@@ -1,7 +1,7 @@
 import { Schema } from 'mongoose';
-import moment from 'moment';
 
-import { ProductRef, StockRef } from '../../settings/schemas';
+import { StockRef } from '../../stock/schemas';
+import { ProductRef } from '../../product/schemas';
 
 export const TransactionRef = 'Transactions';
 export const TransactionSchema = new Schema(

@@ -4,17 +4,11 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { TransactionService } from './transaction.service';
 import { TransactionController } from './transaction.controller';
 
-import {
-  ProductRef,
-  ProductSchema,
-  StockRef,
-  StockSchema,
-} from '../settings/schemas';
-import {
-  TransactionRef,
-  TransactionSchema,
-} from './schemas';
+import { TransactionRef, TransactionSchema } from './schemas';
 import { DocumentModule } from '../document';
+
+import { StockRef, StockSchema } from '../stock/schemas';
+import { ProductRef, ProductSchema } from '../product/schemas';
 
 @Module({
   imports: [
