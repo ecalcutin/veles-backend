@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 
-import { StockRef, StockSchema } from './schemas';
 import {
   TransactionRef,
   TransactionSchema,
@@ -11,15 +10,16 @@ import { SettingsController } from './settings.controller';
 import { SettingsService } from './settings.service';
 import { CategoryModule } from '../category';
 import { ProductModule } from '../product';
+import { StockModule } from '../stock/stock.module';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
-      { name: StockRef, schema: StockSchema },
       { name: TransactionRef, schema: TransactionSchema },
     ]),
     CategoryModule,
     ProductModule,
+    StockModule,
   ],
   controllers: [SettingsController],
   providers: [SettingsService],

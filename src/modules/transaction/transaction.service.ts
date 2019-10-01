@@ -7,15 +7,15 @@ import moment from 'moment';
 import { TransactionRef } from './schemas';
 import { Transaction, TransactionOptions } from './interfaces';
 import { CreateWaybillDto } from './dto';
-import { StockRef } from '../settings/schemas';
-import { Stock } from '../settings/interfaces';
+import { StockRef } from '../stock/schemas';
+import { Stock, StockModel } from '../stock/interfaces';
 
 @Injectable()
 export class TransactionService {
   constructor(
     @InjectModel(TransactionRef)
     private readonly transactionModel: Model<Transaction>,
-    @InjectModel(StockRef) private readonly stockModel: Model<Stock>,
+    @InjectModel(StockRef) private readonly stockModel: Model<StockModel>,
   ) {}
 
   async incrementWaybillCount(

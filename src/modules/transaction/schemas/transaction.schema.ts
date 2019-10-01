@@ -1,6 +1,6 @@
 import { Schema } from 'mongoose';
 
-import { StockRef } from '../../settings/schemas';
+import { StockRef } from '../../stock/schemas';
 import { ProductRef } from '../../product/schemas';
 
 export const TransactionRef = 'Transactions';

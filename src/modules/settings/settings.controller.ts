@@ -8,8 +8,8 @@ import {
   Body,
 } from '@nestjs/common';
 
-import { Stock } from './interfaces';
-import { CreateStockDto, UpdateStockDto } from './dto';
+import { Stock } from '../stock/interfaces';
+import { CreateStockDto, UpdateStockDto } from '../stock/dto';
 import { SettingsService } from './settings.service';
 
 import { CategoryService } from '../category';
@@ -19,6 +19,7 @@ import { CategoryModel } from '../category/interfaces';
 import { ProductService } from '../product';
 import { CreateProductDto, UpdateProductDto } from '../product/dto';
 import { ProductModel } from '../product/interfaces';
+import { StockService } from '../stock/stock.service';
 
 @Controller('settings')
 export class SettingsController {
@@ -26,6 +27,7 @@ export class SettingsController {
     private readonly settingsService: SettingsService,
     private readonly categoryService: CategoryService,
     private readonly productService: ProductService,
+    private readonly stockService: StockService,
   ) {}
 
   @Get('categories')
@@ -55,12 +57,12 @@ export class SettingsController {
 
   @Get('stocks')
   async getStocks() {
-    return await this.settingsService.getStocks();
+    return await this.stockService.find();
   }
 
   @Post('stocks')
   async createStock(@Body() stock: CreateStockDto): Promise<Stock> {
-    return await this.settingsService.createStock(stock);
+    return await this.stockService.create(stock);
   }
 
   @Put('stocks/:id')
@@ -68,12 +70,12 @@ export class SettingsController {
     @Body() stock: UpdateStockDto,
     @Param('id') id: string,
   ): Promise<Stock> {
-    return await this.settingsService.updateStock(id, stock);
+    return await this.stockService.update(id, stock);
   }
 
   @Delete('stocks/:id')
   async removeStockById(@Param('id') id: string): Promise<Stock> {
-    return await this.settingsService.removeStock(id);
+    return await this.stockService.remove(id);
   }
 
   @Get('products')
