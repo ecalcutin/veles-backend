@@ -56,6 +56,16 @@ describe('Stock module', () => {
     expect(result.waybillPrefix).toBe('Prefix-Updated');
   });
 
+  it('should increment income waybill number', async () => {
+    let result = await stockService.incrementIncomeWaybill(testable._id);
+    expect(result).toBe(testable.incomeWaybillCount + 1);
+  });
+
+  it('should increment outcome waybill number', async () => {
+    let result = await stockService.incrementOutcomeWaybill(testable._id);
+    expect(result).toBe(testable.outcomeWaybillCount + 1);
+  });
+
   it('should remove stock', async () => {
     await stockService.remove(testable._id);
     let result = await stockService.get(testable._id);
