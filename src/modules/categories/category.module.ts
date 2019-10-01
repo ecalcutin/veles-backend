@@ -13,5 +13,6 @@ import { CategoryRef, CategorySchema } from './schemas';
     ]),
   ],
   providers: [CategoryService],
+  exports: [CategoryService],
 })
 export class CategoryModule {}
