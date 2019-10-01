@@ -1,1 +1,1 @@
-export { Product, ProductModel } from './product.interface';
+export { Product, ProductModel, ProductPopulated } from './product.interface';

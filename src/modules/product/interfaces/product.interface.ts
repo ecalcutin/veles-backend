@@ -6,5 +6,8 @@ export interface Product {
   readonly price_retail: number;
   readonly price_wholesale: number;
 }
-export interface ProductPopulated {}
+
 export interface ProductModel extends Product, Document {}
+export interface ProductPopulated extends Omit<Product, '_category'> {
+  readonly _category: any;
+}
