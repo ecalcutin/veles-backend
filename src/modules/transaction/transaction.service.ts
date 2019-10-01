@@ -18,12 +18,24 @@ export class TransactionService {
     @InjectModel(StockRef) private readonly stockModel: Model<Stock>,
   ) {}
 
-  async prepareWaybillId(stock_id: string): Promise<string | null> {
-    let stock = await this.stockModel
-      .findByIdAndUpdate(stock_id, { $inc: { waybillNumber: 1 } })
-      .exec();
+  async incrementWaybillCount(
+    stock_id: string,
+    positive: boolean,
+  ): Promise<string | null> {
+    let stock: Stock;
+    if (positive) {
+      stock = await this.stockModel
+        .findByIdAndUpdate(stock_id, { $inc: { incomeWaybillCount: 1 } })
+        .exec();
+      return `${stock.waybillPrefix}-${stock.incomeWaybillCount + 1}`;
+    }
+    if (!positive) {
+      stock = await this.stockModel
+        .findByIdAndUpdate(stock_id, { $inc: { outcomeWaybillCount: 1 } })
+        .exec();
+      return `${stock.waybillPrefix}-${stock.outcomeWaybillCount + 1}`;
+    }
     if (stock) {
-      return `${stock.waybillPrefix}-${stock.waybillNumber + 1}`;
     } else {
       return null;
     }
@@ -189,7 +201,10 @@ export class TransactionService {
       case 'sell':
       case 'utilization':
         {
-          let waybillID = await this.prepareWaybillId(waybill.source);
+          let waybillID = await this.incrementWaybillCount(
+            waybill.source,
+            false,
+          );
           await Promise.all([
             ...waybill.products.map(item => {
               this.createTransaction({
@@ -211,7 +226,10 @@ export class TransactionService {
       case 'buy':
       case 'import':
         {
-          let waybillID = await this.prepareWaybillId(waybill.destination);
+          let waybillID = await this.incrementWaybillCount(
+            waybill.destination,
+            true,
+          );
           await Promise.all([
             ...waybill.products.map(item => {
               this.createTransaction({
@@ -231,9 +249,13 @@ export class TransactionService {
         break;
       case 'move':
         {
-          let sourceWaybillID = await this.prepareWaybillId(waybill.source);
-          let destinationWaybillID = await this.prepareWaybillId(
+          let sourceWaybillID = await this.incrementWaybillCount(
+            waybill.source,
+            false,
+          );
+          let destinationWaybillID = await this.incrementWaybillCount(
             waybill.destination,
+            true,
           );
           await Promise.all([
             ...waybill.products.map(item => {
@@ -267,7 +289,10 @@ export class TransactionService {
         break;
       case 'production':
         {
-          let waybillID = await this.prepareWaybillId(waybill.destination);
+          let waybillID = await this.incrementWaybillCount(
+            waybill.destination,
+            true,
+          );
           await Promise.all([
             ...waybill.products.map(item => {
               this.createTransaction({
