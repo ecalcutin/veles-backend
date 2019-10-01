@@ -8,42 +8,49 @@ import {
   Body,
 } from '@nestjs/common';
 
-import { Category, Stock, Product } from './interfaces';
+import { Stock, Product } from './interfaces';
 import {
-  CreateCategoryDto,
   CreateStockDto,
   UpdateStockDto,
   CreateProductDto,
   UpdateProductDto,
-  UpdateCategoryDto,
 } from './dto';
 import { SettingsService } from './settings.service';
 
+import { CategoryService } from '../categories';
+import { CreateCategoryDto, UpdateCategoryDto } from '../categories/dto';
+import { CategoryModel } from '../categories/interfaces';
+
 @Controller('settings')
 export class SettingsController {
-  constructor(private readonly settingsService: SettingsService) {}
+  constructor(
+    private readonly settingsService: SettingsService,
+    private readonly categoryService: CategoryService,
+  ) {}
 
   @Get('categories')
   async getCategories() {
-    return await this.settingsService.getCategories();
+    return await this.categoryService.find();
   }
 
   @Post('categories')
-  async createCategory(@Body() category: CreateCategoryDto): Promise<Category> {
-    return await this.settingsService.createCategory(category);
+  async createCategory(
+    @Body() category: CreateCategoryDto,
+  ): Promise<CategoryModel> {
+    return await this.categoryService.create(category);
   }
 
   @Put('categories/:id')
   async updateCategoryById(
     @Body() category: UpdateCategoryDto,
     @Param('id') id: string,
-  ): Promise<Category> {
-    return await this.settingsService.updateCategory(id, category);
+  ): Promise<CategoryModel> {
+    return await this.categoryService.update(id, category);
   }
 
   @Delete('categories/:id')
-  async removeCategoryById(@Param('id') id: string): Promise<Category> {
-    return await this.settingsService.removeCategory(id);
+  async removeCategoryById(@Param('id') id: string): Promise<CategoryModel> {
+    return await this.categoryService.remove(id);
   }
 
   @Get('stocks')

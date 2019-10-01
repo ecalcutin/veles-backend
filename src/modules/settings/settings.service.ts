@@ -2,14 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
-import { StockRef, CategoryRef, ProductRef } from './schemas';
-import { Stock, Category, Product } from './interfaces';
+import { StockRef, ProductRef } from './schemas';
+import { Stock, Product } from './interfaces';
 import {
   CreateProductDto,
   CreateStockDto,
-  CreateCategoryDto,
   UpdateProductDto,
-  UpdateCategoryDto,
   UpdateStockDto,
 } from './dto';
 import { TransactionRef } from '../transaction/schemas/transaction.schema';
@@ -19,7 +17,6 @@ import { Transaction } from '../transaction/interfaces/transaction.interface';
 export class SettingsService {
   constructor(
     @InjectModel(StockRef) private readonly stockModel: Model<Stock>,
-    @InjectModel(CategoryRef) private readonly categoryModel: Model<Category>,
     @InjectModel(ProductRef) private readonly productModel: Model<Product>,
     @InjectModel(TransactionRef)
     private readonly transactionModel: Model<Transaction>,
