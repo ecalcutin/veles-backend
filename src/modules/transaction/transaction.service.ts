@@ -109,6 +109,21 @@ export class TransactionService {
   async searchWaybills(options?: any) {
     let aggregated = await this.transactionModel.aggregate([
       {
+        $match: {
+          createdAt: {
+            $gte: moment()
+              .subtract(7, 'd')
+              .startOf('day')
+              .toDate(),
+          },
+        },
+      },
+      {
+        $sort: {
+          createdAt: 1,
+        },
+      },
+      {
         $project: {
           _id: 0,
         },
