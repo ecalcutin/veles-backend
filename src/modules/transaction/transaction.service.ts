@@ -107,21 +107,36 @@ export class TransactionService {
   }
 
   async searchWaybills(options?: any) {
+    let params = {
+      createdAt: {
+        $gte: moment()
+          .subtract(1, 'month')
+          .startOf('day')
+          .toDate(),
+        $lte: moment()
+          .endOf('day')
+          .toDate(),
+      },
+    };
+    if (options.startDate) {
+      params.createdAt.$gte = moment(options.startDate)
+        .startOf('day')
+        .toDate();
+    }
+    if (options.endDate) {
+      params.createdAt.$lte = moment(options.endDate)
+        .endOf('day')
+        .toDate();
+    }
+    if (options.item) {
+      params['_product'] = new ObjectID(options.item);
+    }
+    if (options.stock) {
+      params['_stock'] = new ObjectID(options.stock);
+    }
     let aggregated = await this.transactionModel.aggregate([
       {
-        $match: {
-          createdAt: {
-            $gte: moment()
-              .subtract(7, 'd')
-              .startOf('day')
-              .toDate(),
-          },
-        },
-      },
-      {
-        $sort: {
-          createdAt: 1,
-        },
+        $match: params,
       },
       {
         $project: {
@@ -180,9 +195,12 @@ export class TransactionService {
           },
         },
       },
+      {
+        $sort: {
+          '_id.date': -1,
+        },
+      },
     ]);
-    console.log(aggregated);
-    console.log(aggregated[0]);
     return aggregated;
   }
 

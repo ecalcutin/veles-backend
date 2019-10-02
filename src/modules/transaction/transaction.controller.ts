@@ -32,8 +32,8 @@ export class TransactionController {
   }
 
   @Get('/waybill')
-  async findWaybills(): Promise<any> {
-    return await this.transactionService.searchWaybills();
+  async findWaybills(@Query('query') options): Promise<any> {
+    return await this.transactionService.searchWaybills(JSON.parse(options));
   }
 
   @Post('/waybill/document')
