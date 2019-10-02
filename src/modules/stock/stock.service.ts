@@ -31,20 +31,22 @@ export class StockService {
     return await this.stockModel.findByIdAndRemove(id).exec();
   }
 
-  async incrementIncomeWaybill(id: string): Promise<number> {
+  async nextIncomeWaybill(id: string): Promise<string> {
     let result = await this.stockModel
       .findByIdAndUpdate(id, {
         $inc: { incomeWaybillCount: 1 },
       })
       .exec();
-    return result.toObject().incomeWaybillCount + 1;
+    return `${result.waybillPrefix}-${result.toObject().incomeWaybillCount +
+      1}`;
   }
-  async incrementOutcomeWaybill(id: string): Promise<number> {
+  async nextOutcomeWaybill(id: string): Promise<string> {
     let result = await this.stockModel
       .findByIdAndUpdate(id, {
         $inc: { outcomeWaybillCount: 1 },
       })
       .exec();
-    return result.toObject().outcomeWaybillCount + 1;
+    return `${result.waybillPrefix}-${result.toObject().outcomeWaybillCount +
+      1}`;
   }
 }

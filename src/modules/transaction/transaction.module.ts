@@ -9,10 +9,12 @@ import { DocumentModule } from '../document';
 
 import { StockRef, StockSchema } from '../stock/schemas';
 import { ProductRef, ProductSchema } from '../product/schemas';
+import { StockModule } from '../stock';
 
 @Module({
   imports: [
     DocumentModule,
+    StockModule,
     MongooseModule.forFeature([
       { name: ProductRef, schema: ProductSchema },
       { name: TransactionRef, schema: TransactionSchema },

@@ -46,6 +46,20 @@ describe('Stock module', () => {
     expect(result.waybillPrefix).toBe('TEST-Prefix');
   });
 
+  it('should increment income waybill number', async () => {
+    let result = await stockService.nextIncomeWaybill(testable._id);
+    expect(result).toBe(
+      `${testable.waybillPrefix}-${testable.incomeWaybillCount + 1}`,
+    );
+  });
+
+  it('should increment outcome waybill number', async () => {
+    let result = await stockService.nextOutcomeWaybill(testable._id);
+    expect(result).toBe(
+      `${testable.waybillPrefix}-${testable.outcomeWaybillCount + 1}`,
+    );
+  });
+
   it('should update stock', async () => {
     await stockService.update(testable._id, {
       title: 'Test-Updated',
@@ -54,16 +68,6 @@ describe('Stock module', () => {
     let result = await stockService.get(testable._id);
     expect(result.title).toBe('Test-Updated');
     expect(result.waybillPrefix).toBe('Prefix-Updated');
-  });
-
-  it('should increment income waybill number', async () => {
-    let result = await stockService.incrementIncomeWaybill(testable._id);
-    expect(result).toBe(testable.incomeWaybillCount + 1);
-  });
-
-  it('should increment outcome waybill number', async () => {
-    let result = await stockService.incrementOutcomeWaybill(testable._id);
-    expect(result).toBe(testable.outcomeWaybillCount + 1);
   });
 
   it('should remove stock', async () => {
