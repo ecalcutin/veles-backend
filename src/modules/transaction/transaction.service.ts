@@ -235,7 +235,7 @@ export class TransactionService {
       case 'import':
         {
           let waybillID = await this.stockService.nextIncomeWaybill(
-            waybill.source,
+            waybill.destination,
           );
           await Promise.all([
             ...waybill.products.map(item => {
