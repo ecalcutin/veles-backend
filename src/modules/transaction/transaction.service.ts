@@ -107,6 +107,7 @@ export class TransactionService {
   }
 
   async searchWaybills(options?: any) {
+    let item = options.item || {};
     let params = {
       createdAt: {
         $gte: moment()
@@ -127,9 +128,6 @@ export class TransactionService {
       params.createdAt.$lte = moment(options.endDate)
         .endOf('day')
         .toDate();
-    }
-    if (options.item) {
-      params['_product'] = new ObjectID(options.item);
     }
     if (options.stock) {
       params['_stock'] = new ObjectID(options.stock);
@@ -191,6 +189,15 @@ export class TransactionService {
               category: '$category',
               quantity: '$change',
               price: '$price.value',
+            },
+          },
+        },
+      },
+      {
+        $match: {
+          items: {
+            $elemMatch: {
+              'product._id': new ObjectID(item),
             },
           },
         },
