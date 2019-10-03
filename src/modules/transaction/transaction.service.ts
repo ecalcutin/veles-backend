@@ -107,7 +107,15 @@ export class TransactionService {
   }
 
   async searchWaybills(options?: any) {
-    let item = options.item || {};
+    let items = options.item
+      ? {
+          items: {
+            $elemMatch: {
+              'product._id': new ObjectID(options.item),
+            },
+          },
+        }
+      : {};
     let params = {
       createdAt: {
         $gte: moment()
@@ -194,13 +202,7 @@ export class TransactionService {
         },
       },
       {
-        $match: {
-          items: {
-            $elemMatch: {
-              'product._id': new ObjectID(item),
-            },
-          },
-        },
+        $match: items,
       },
       {
         $sort: {
